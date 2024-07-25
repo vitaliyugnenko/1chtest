@@ -738,6 +738,36 @@
   color: rgb(255, 255, 255);
 }
 
+.header-menu-dropdown-item-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-menu-dropdown-item-link svg {
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  width: 24px;
+  height: 24px;
+}
+
+#help2 {
+  cursor: pointer;
+}
+
+#help2:hover {
+  color: white;
+}
+
+#settings4 {
+  cursor: pointer;
+}
+
+#settings4:hover {
+  color: white;
+}
+
 @media (max-width: 1336px) {
   .header-nav-menu {
     display: none;
