@@ -1,0 +1,704 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  text-decoration: none;
+}
+
+.main-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: radial-gradient(circle at left, #0d192c, black, #1c111e);
+}
+
+.header-container {
+  height: 82px;
+  width: 100%;
+  color: #6c86ad;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  padding-bottom: 16px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  max-width: 1400px;
+}
+
+#text {
+  width: 84px;
+  height: 36px;
+}
+
+.header-container svg {
+  overflow: hidden;
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+}
+
+.nav-menu-item:hover {
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.header-nav-menu {
+  align-items: center;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  color: rgb(255, 255, 255);
+}
+
+.header-left-col {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.header-left-col img {
+  height: 50px;
+}
+
+.nav-menu-item-dao {
+  color: #3b4c67 !important;
+  cursor: help;
+}
+
+.nav-menu-item-buy-crypto {
+  color: #3b4c67 !important;
+  cursor: help;
+}
+
+.header-nav-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-menu-item {
+  margin-left: 1.25rem;
+}
+
+.nav-menu-item a {
+  font-weight: 400;
+}
+
+.nav-menu-item span {
+  margin-right: 0.1rem;
+  color: #586f90;
+}
+
+.nav-menu-item span:hover {
+  margin-right: 0.1rem;
+  color: rgb(255, 255, 255);
+}
+
+.nav-menu-item-purple {
+  background: linear-gradient(to right, #3555ee, #d702ff);
+  color: rgb(255, 255, 255) !important;
+  padding: 4px 8px;
+  font-size: 13px;
+  line-height: 16px;
+  border-radius: 61px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  display: inline-block;
+}
+
+.header-buttons {
+  margin-right: 16px;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.header-buttons button {
+  margin-right: 8px;
+}
+
+#settings4 {
+  margin-left: 14px;
+  width: 24px;
+  height: 24px;
+}
+
+#help2 {
+  margin-left: 14px;
+  width: 24px;
+  height: 24px;
+}
+
+.network-button button {
+  background: linear-gradient(to right, #8247e5, #6027c0);
+  border-radius: 12px;
+  padding: 6px 10px 6px 8px;
+  font-weight: 400;
+  text-align: center;
+  height: 36px;
+}
+
+.network-button button #polygon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.network-button button #arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: 0.25rem;
+}
+
+.network-button button:hover {
+  border-color: #a073eb;
+}
+
+.account-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-button button {
+  background-color: #0c1c30;
+  color: #2f8af5;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 10px 6px 8px;
+  font-weight: 400;
+  text-align: center;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-button-wallet-disconnected {
+  display: flex;
+  align-items: center; /* Центрирование по вертикали */
+  gap: 8px; /* Пробел между иконкой и текстом */
+}
+
+.account-button-wallet-disconnected svg {
+  width: 24px;
+  height: 24px;
+}
+
+.account-button-wallet-connected {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #131823;
+  padding: 4px 8px;
+}
+
+.account-button-wallet-connected img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.account-button-wallet-connected span {
+  background-color: #324054;
+  color: rgb(255, 255, 255);
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+
+.account-button-wallet-connected span:hover {
+  border: 1px solid rgb(255, 255, 255);
+}
+
+.account-button button #wallet {
+  height: 24px;
+  width: 24px;
+  margin-right: 0.5rem;
+}
+
+.account-button-diconnected button {
+  background-color: transparent;
+}
+
+.account-button-diconnected:hover {
+  border: none;
+  background-color: #172a45;
+}
+
+.account-button-wallet-disconnected svg {
+  margin-right: 0;
+}
+
+.account-button-wallet-disconnected button {
+  margin-right: -0.5rem;
+  margin-left: -1rem;
+}
+
+.page-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.swap-form-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.25rem;
+}
+
+.swap-separator {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.swap-reverse {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 0px,
+    rgba(0, 0, 0, 0.25) 0px 1px 2px 0px;
+  background-color: #324054;
+  position: absolute;
+  top: -8px; /* Добавлено для смещения вверх */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.swap-reverse:hover {
+  transform: translateX(-50%) rotate(180deg); /* Добавлено для поворота на 180 градусов */
+}
+
+.trade-menu {
+  margin-left: 1rem;
+}
+
+.trade-menu-swap {
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  cursor: pointer;
+  margin-right: 1.25rem;
+}
+
+.trade-menu-limit {
+  color: #6c86ad;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+}
+
+.swap-form-actions {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0.5rem;
+}
+
+.restart-icon {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+
+  border-radius: 12px;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restart-icon:hover {
+  background-color: #202838;
+}
+
+.restart-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.add-icon {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-icon:hover {
+  background-color: #202838;
+}
+
+.add-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.settings-icon {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-icon:hover {
+  background-color: #202838;
+}
+
+.settings-icon img {
+  width: 24px;
+  height: 24px;
+  color: rgb(255, 255, 255);
+}
+
+.swap-form-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.swap-container {
+  max-width: 500px;
+  background-color: #131823;
+  border-radius: 24px;
+  margin-top: 3rem;
+  padding: 8px;
+}
+
+.source-token-input {
+  width: 464px;
+  height: 104px;
+  background-color: #06070a;
+  margin: 0 auto;
+  border-radius: 24px;
+  margin-top: 0.5rem;
+  padding: 1rem;
+}
+
+.destination-token-input {
+  width: 464px;
+  height: 104px;
+  background-color: #131823;
+  margin: 0 auto;
+  border-radius: 24px;
+  margin-top: 0.5rem;
+  border: 1px solid;
+  border-color: #202835;
+  padding: 1rem;
+  margin-bottom: -0.5rem;
+}
+
+.swap-button-container {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.swap-button {
+  background-color: #172a45;
+  height: 48px;
+  width: 464px;
+  line-height: 26px;
+  border-radius: 24px;
+  border: none;
+}
+
+.swap-button:hover {
+  border: none;
+  background-color: #1e4677;
+}
+
+.swap-button-content {
+  color: #2f8af5;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.swap-button-content svg {
+  margin-right: 8px;
+}
+
+.selected-token {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-token-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.token-info {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #6c86ad;
+}
+
+.source-title {
+  font-size: 13px;
+  color: #6c86ad;
+}
+
+.select-source-token {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.select-source-token img {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+}
+
+.source-token-amount {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.selected-token-symbol {
+  margin-right: 0.5rem;
+  font-size: 20px;
+}
+
+#arrow-down {
+  color: #6c86ad;
+}
+
+.destination-token-amount {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.destination-title {
+  font-size: 13px;
+  color: #6c86ad;
+}
+
+.select-destination-token {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.select-destination-token img {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+}
+
+.swap-from-button-title {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+}
+
+.swap-from button {
+  width: 100%;
+  height: 48px;
+  background-color: #0c1119;
+  padding: 16px;
+  text-align: left;
+  transition-duration: 0.25s;
+  border-radius: 16px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: none;
+}
+
+.swap-from button:hover {
+  border: none;
+}
+
+.from-token-amount {
+  font-size: 13px;
+  font-weight: 400;
+  margin-right: 0.25rem;
+}
+
+.from-token-equal {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6c86ad;
+  margin-right: 0.25rem;
+}
+
+.from-token-rate {
+  font-size: 13px;
+  font-weight: 400;
+  margin-right: 0.25rem;
+}
+
+.from-token-name {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-right: 0.25rem;
+}
+
+.usd-value {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #6c86ad;
+}
+
+.swap-from-button-tooltip {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: flex-end;
+}
+
+.gasless-logo {
+  width: 16px;
+  height: 16px;
+  margin-right: 0.25rem;
+}
+
+.gasless-cost {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  margin-right: 0.5rem;
+}
+
+.swap-from-button-tooltip-usd-token-price {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #6c86ad;
+  margin-right: 0.5rem;
+  text-decoration: line-through;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 32px;
+  font-size: 13px;
+  line-height: 16px;
+  border-top: 1px solid #131823;
+  max-width: 1400px;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 400;
+  color: #6c86ad;
+}
+
+.footer-ui-mirrors {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-ui-mirrors span:first-child {
+  white-space: nowrap;
+}
+
+#arrow-link {
+  margin-left: 4px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+}
+
+.footer-ui-mirrors a {
+  margin-left: 16px;
+  align-self: center;
+  color: #6c86ad;
+}
+
+.footer-ui-mirrors a:hover {
+  color: rgb(255, 255, 255);
+}
+
+.block-number {
+  display: flex;
+  flex-direction: row;
+}
+
+.block-number:hover a {
+  color: #21c187;
+}
+
+.block-number-link {
+  text-decoration: none;
+  transition: 0.2s;
+  margin-left: 12px;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.block-number-link::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  vertical-align: middle;
+  background: #21c187;
+  margin-right: 8px;
+}
+
+@media (max-width: 1336px) {
+  .header-nav-menu {
+    display: none;
+  }
+}
