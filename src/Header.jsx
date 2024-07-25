@@ -2,7 +2,17 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import logo from "./assets/logo.webp";
 import metamask from "./assets/metamask.svg";
-import docsIcon from "./assets/docs-icon.svg";
+import bnbIcon from "./assets/bnb.svg";
+import polygonIcon from "./assets/polygon.svg";
+import optimismIcon from "./assets/optimism.svg";
+import arbitrumIcon from "./assets/arbitrum.svg";
+import gnosisIcon from "./assets/gnosis.svg";
+import avalancheIcon from "./assets/avalanche.svg";
+import fantomIcon from "./assets/fantom.svg";
+import klaytnIcon from "./assets/klaytn.svg";
+import auroraIcon from "./assets/aurora.svg";
+import zksyncIcon from "./assets/zksync.svg";
+import baseIcon from "./assets/base.svg";
 
 const formatAddress = (address) => {
   if (!address) return "";
@@ -49,6 +59,7 @@ function Header() {
   const [error, setError] = useState();
   const [walletAddress, setWalletAddress] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownBridgeVisible, setDropdownBridgeVisible] = useState(false);
 
   const handleConnectWallet = async () => {
     setError();
@@ -56,21 +67,28 @@ function Header() {
   };
 
   useEffect(() => {
-    checkWalletConnection({ setWalletAddress, setError });
+    if (window.ethereum) {
+      checkWalletConnection({ setWalletAddress, setError });
 
-    const handleAccountsChanged = (accounts) => {
-      if (accounts.length === 0) {
-        setWalletAddress("");
-      } else {
-        setWalletAddress(formatAddress(accounts[0]));
-      }
-    };
+      const handleAccountsChanged = (accounts) => {
+        if (accounts.length === 0) {
+          setWalletAddress("");
+        } else {
+          setWalletAddress(formatAddress(accounts[0]));
+        }
+      };
 
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
 
-    return () => {
-      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-    };
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    } else {
+      console.log("No crypto wallet found. Please install it.");
+    }
   }, []);
 
   return (
@@ -129,7 +147,11 @@ function Header() {
           <div className="nav-menu-item">
             <span className="nav-menu-item-dao">DAO</span>
           </div>
-          <div className="nav-menu-item">
+          <div
+            className="nav-menu-item"
+            onMouseEnter={() => setDropdownBridgeVisible(true)}
+            onMouseLeave={() => setDropdownBridgeVisible(false)}
+          >
             <span>Bridges</span>
             <svg
               id="arrow"
@@ -663,6 +685,55 @@ function Header() {
               <span>Privacy policy</span>
             </a>
           </div>
+        </div>
+      )}
+
+      {dropdownBridgeVisible && (
+        <div className="dropdownBridges">
+          <a className="dropdownBridges-item">
+            <img src={bnbIcon} />
+            <span>BNB Chain bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={polygonIcon} />
+            <span>Polygon bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={optimismIcon} />
+            <span>Optimism bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={arbitrumIcon} />
+            <span>Arbitrum bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={gnosisIcon} />
+            <span>Gnosis Chain bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={avalancheIcon} />
+            <span>Avalanche bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={fantomIcon} />
+            <span>Fantom bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={klaytnIcon} />
+            <span>Klaytn bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={auroraIcon} />
+            <span>Aurora bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={zksyncIcon} />
+            <span>zkSync Era bridge</span>
+          </a>
+          <a className="dropdownBridges-item">
+            <img src={baseIcon} />
+            <span>Base bridge</span>
+          </a>
         </div>
       )}
     </div>
