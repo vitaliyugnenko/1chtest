@@ -47,6 +47,7 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
 function Header() {
   const [error, setError] = useState();
   const [walletAddress, setWalletAddress] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const handleConnectWallet = async () => {
     setError();
@@ -232,6 +233,8 @@ function Header() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            onMouseEnter={() => setDropdownVisible(true)}
+            onMouseLeave={() => setDropdownVisible(false)}
           >
             <path
               fillRule="evenodd"
@@ -265,6 +268,83 @@ function Header() {
           </svg>
         </div>
       </div>
+
+      {dropdownVisible && (
+        <div className="header-menu-dropdown">
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Documentation</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Blog</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Help</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Suggest a feature</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Report a bug</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Address screening</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Terms of use</span>
+            </a>
+          </div>
+          <div className="header-menu-dropdown-item">
+            <a
+              className="header-menu-dropdown-item-link"
+              href="https://docs.1inch.io/"
+              target="_blank"
+            >
+              <span>Privacy policy</span>
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
