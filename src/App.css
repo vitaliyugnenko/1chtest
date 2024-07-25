@@ -702,7 +702,6 @@
   height: 368px;
   background-color: #131823;
   color: #172a45 !important;
-
   position: absolute;
   top: 63px;
   left: 1360px;
@@ -810,6 +809,117 @@
   margin-left: 0.5rem;
   width: 24px;
   height: 24px;
+}
+
+.dropdown-networks {
+  width: 220px;
+  background-color: #131823;
+  position: absolute;
+  top: 62px;
+  left: 1250px;
+  line-height: 16px;
+  font-weight: 400;
+  border-radius: 16px;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.dropdown-networks-item {
+  width: 100%;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: #586f90;
+  cursor: pointer;
+  font-weight: 400;
+  padding: 8px 16px !important;
+}
+
+.dropdown-networks-item.l2 {
+  background-color: #10141c;
+}
+
+.dropdown-networks-item img {
+  margin-right: 1rem;
+  width: 24px;
+  height: 24px;
+}
+
+.dropdown-networks-item-l2-icon {
+  color: #586f90;
+}
+
+.dropdown-networks-item:hover {
+  color: rgb(255, 255, 255);
+  background-color: #0c1119;
+}
+
+.dropdown-trade {
+  top: 62px;
+  left: 437px;
+  background-color: #131823;
+  position: absolute;
+  line-height: 16px;
+  font-weight: 400;
+  border-radius: 16px;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  max-height: 443px;
+  width: 296px;
+}
+
+#dropdown-trade-item-selected {
+  color: #ffffff;
+}
+
+.dropdown-trade-item img {
+  width: 24px;
+  height: 24px;
+}
+
+.dropdown-trade-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.dropdown-trade-item img {
+  margin-right: 1rem;
+}
+
+.dropdown-trade-item-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 400;
+  color: #586f90;
+}
+
+.dropdown-trade-item-content h2 {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-trade-item-content:hover {
+  color: rgb(255, 255, 255);
+  background-color: #0c1119;
 }
 
 @media (max-width: 1336px) {

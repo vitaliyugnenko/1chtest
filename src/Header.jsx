@@ -13,6 +13,11 @@ import klaytnIcon from "./assets/klaytn.svg";
 import auroraIcon from "./assets/aurora.svg";
 import zksyncIcon from "./assets/zksync.svg";
 import baseIcon from "./assets/base.svg";
+import ethereumIcon from "./assets/ethereum.svg";
+import l2Icon from "./assets/l2.svg";
+import simpleModeIcon from "./assets/simple-mode.svg";
+import advancedModeIcon from "./assets/advanced-mode.svg";
+import limitOrderIcon from "./assets/limit-order.svg";
 
 const formatAddress = (address) => {
   if (!address) return "";
@@ -736,6 +741,89 @@ function Header() {
           </a>
         </div>
       )}
+
+      <div className="dropdown-networks">
+        <a className="dropdown-networks-item">
+          <img src={ethereumIcon} />
+          <span>Ethereum</span>
+        </a>
+
+        <a className="dropdown-networks-item l2">
+          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+          <img src={arbitrumIcon} />
+          <span>Arbitrum</span>
+        </a>
+        <a className="dropdown-networks-item l2">
+          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+          <img src={optimismIcon} />
+          <span>Optimism</span>
+        </a>
+        <a className="dropdown-networks-item l2">
+          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+          <img src={zksyncIcon} />
+          <span>zkSync Era</span>
+        </a>
+        <a className="dropdown-networks-item l2">
+          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+          <img src={baseIcon} />
+          <span>Base</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={bnbIcon} />
+          <span>BNB Chain</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={polygonIcon} />
+          <span>Polygon</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={gnosisIcon} />
+          <span>Gnosis</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={avalancheIcon} />
+          <span>Avalanche</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={fantomIcon} />
+          <span>Fantom</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={klaytnIcon} />
+          <span>Klaytn</span>
+        </a>
+        <a className="dropdown-networks-item">
+          <img src={auroraIcon} />
+          <span>Aurora</span>
+        </a>
+      </div>
+
+      <div className="dropdown-trade">
+        <a className="dropdown-trade-item">
+          <img src={simpleModeIcon} />
+          <div
+            id="dropdown-trade-item-selected"
+            className="dropdown-trade-item-content"
+          >
+            <h2>Simple mode</h2>
+            <span>The most user-friendly way to trade</span>
+          </div>
+        </a>
+        <a className="dropdown-trade-item">
+          <img src={advancedModeIcon} />
+          <div className="dropdown-trade-item-content">
+            <h2>Advanced mode</h2>
+            <span>Take advantage of all the familiar tools</span>
+          </div>
+        </a>
+        <a className="dropdown-trade-item">
+          <img src={limitOrderIcon} />
+          <div className="dropdown-trade-item-content">
+            <h2>Limit order</h2>
+            <span>Schedule a swap to get the best price</span>
+          </div>
+        </a>
+      </div>
     </div>
   );
 }
