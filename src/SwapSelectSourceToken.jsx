@@ -15,7 +15,7 @@ import aaveIcon from "./assets/aave.webp";
 
 import backIcon from "./assets/back.png";
 
-function SwapSelectToken({ SwapSelect, SelectToken }) {
+function SwapSelectSourceToken({ SwapSelect, SelectToken }) {
   const setSwapSelect = () => {
     SwapSelect(false);
   };
@@ -278,4 +278,4 @@ function SwapSelectToken({ SwapSelect, SelectToken }) {
   );
 }
 
-export default SwapSelectToken;
+export default SwapSelectSourceToken;

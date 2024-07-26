@@ -2,21 +2,59 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import SwapSelectToken from "./SwapSelectToken";
+import SwapSelectSourceToken from "./SwapSelectSourceToken";
 import restartIcon from "./assets/restart.png";
 import addIcon from "./assets/add.png";
 import settingsicon from "./assets/settings.png";
 import gasLess from "./assets/gasless-night_2-1.webp";
 
-function Swap() {
+import maticIcon from "./assets/matic.svg";
+import wethIcon from "./assets/weth.webp";
+import daiIcon from "./assets/dai.webp";
+import usdcIcon from "./assets/usdc.webp";
+import usdtIcon from "./assets/usdt.webp";
+import wbtcIcon from "./assets/wbtc.webp";
+import deIcon from "./assets/de.webp";
+import pinIcon from "./assets/pin.svg";
+import linkIcon from "./assets/LINK.webp";
+import uniIcon from "./assets/uni.webp";
+import grtIcon from "./assets/grt.webp";
+import ldoIcon from "./assets/ldo.webp";
+import aaveIcon from "./assets/aave.webp";
+
+function Swap({
+  selectedToken,
+  setSelectedToken,
+  selectedSourceToken,
+  setSelectedSourceToken,
+}) {
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
+  const [swapSelectSourceToken, setSwapSelectSourceToken] = useState(false);
 
   const [price, setPrice] = useState(null);
+  const [priceSource, setPriceSource] = useState(null);
   const [percent_changed, setPercentChanged] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const symbol = "DAI"; // Жестко задаем символ для тестирования
+
+  const tokenIcons = {
+    MATIC: maticIcon,
+    WETH: wethIcon,
+    DAI: daiIcon,
+    USDC: usdcIcon,
+    USDT: usdtIcon,
+    WBTC: wbtcIcon,
+    DE: deIcon,
+    PIN: pinIcon,
+    LINK: linkIcon,
+    UNI: uniIcon,
+    GRT: grtIcon,
+    LDO: ldoIcon,
+    AAVE: aaveIcon,
+  };
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -25,7 +63,7 @@ function Swap() {
       try {
         const response = await axios.get("http://localhost:3000/crypto", {
           params: {
-            symbol: symbol,
+            symbol: selectedToken,
             convert: "USD",
           },
         });
@@ -33,15 +71,30 @@ function Swap() {
         // Логирование для отладки
         console.log("API Response:", response.data);
 
-        if (response.data.data && response.data.data[symbol]) {
+        if (response.data.data && response.data.data[selectedToken]) {
           const roundedPrice =
-            response.data.data[symbol].quote.USD.price.toFixed(6);
+            response.data.data[selectedToken].quote.USD.price.toFixed(6);
           const roundedPercentChanged =
-            response.data.data[symbol].quote.USD.percent_change_1h.toFixed(2);
+            response.data.data[
+              selectedToken
+            ].quote.USD.percent_change_1h.toFixed(2);
           setPrice(roundedPrice);
           setPercentChanged(roundedPercentChanged);
         } else {
-          setError(`Symbol ${symbol} not found in response`);
+          setError(`Symbol ${selectedToken} not found in response`);
+        }
+
+        if (response.data.data && response.data.data[selectedSourceToken]) {
+          const roundedPrice =
+            response.data.data[selectedSourceToken].quote.USD.price.toFixed(6);
+          const roundedPercentChanged =
+            response.data.data[
+              selectedSourceToken
+            ].quote.USD.percent_change_1h.toFixed(2);
+          setPriceSource(roundedPrice);
+          setPercentChanged(roundedPercentChanged);
+        } else {
+          setError(`Symbol ${selectedSourceToken} not found in response`);
         }
       } catch (err) {
         setError(err.message);
@@ -51,12 +104,12 @@ function Swap() {
     };
 
     fetchPrice();
-  }, []);
+  }, [selectedToken, selectedSourceToken]);
 
   return (
     <div className="page-content">
       <div className="swap-container">
-        {!swapSelectToken && (
+        {!swapSelectToken && !swapSelectSourceToken && (
           <>
             <div className="swap-form-header">
               <div className="trade-menu">
@@ -86,14 +139,16 @@ function Swap() {
               <div className="selected-token">
                 <div
                   className="select-source-token"
-                  onClick={() => setSwapSelectToken(true)}
+                  onClick={() => setSwapSelectSourceToken(true)}
                 >
                   <img
                     className="selected-token-icon"
-                    src="https://tokens.1inch.io/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270.png"
+                    src={tokenIcons[selectedSourceToken]}
                     alt=""
                   />
-                  <span className="selected-token-symbol">WMATIC</span>
+                  <span className="selected-token-symbol">
+                    {selectedSourceToken}
+                  </span>
                   <svg
                     id="arrow-down"
                     width="16"
@@ -115,7 +170,7 @@ function Swap() {
               </div>
               <div className="token-info">
                 <span className="token-name">Wrapped Matic</span>
-                <div className="token-amount">~$0.535032</div>
+                <div className="token-amount">{priceSource}</div>
               </div>
             </div>
             <div className="swap-separator">
@@ -149,10 +204,10 @@ function Swap() {
                 >
                   <img
                     className="selected-token-icon"
-                    src="https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png"
+                    src={tokenIcons[selectedToken]}
                     alt=""
                   />
-                  <span className="selected-token-symbol">DAI</span>
+                  <span className="selected-token-symbol">{selectedToken}</span>
                   <svg
                     id="arrow-down"
                     width="16"
@@ -293,7 +348,18 @@ function Swap() {
             </div>
           </>
         )}
-        {swapSelectToken && <SwapSelectToken SwapSelect={setSwapSelectToken} />}
+        {swapSelectToken && (
+          <SwapSelectToken
+            SwapSelect={setSwapSelectToken}
+            SelectToken={setSelectedToken}
+          />
+        )}
+        {swapSelectSourceToken && (
+          <SwapSelectSourceToken
+            SwapSelect={setSwapSelectSourceToken}
+            SelectToken={setSelectedSourceToken}
+          />
+        )}
       </div>
     </div>
   );
