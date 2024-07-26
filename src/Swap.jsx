@@ -95,7 +95,10 @@ function Swap() {
                 </svg>
               </div>
             </div>
-            <div className="destination-token-input">
+            <div
+              className="destination-token-input"
+              onClick={() => setSwapSelectToken(true)}
+            >
               <div className="destination-title">
                 <span>You pay</span>
               </div>
