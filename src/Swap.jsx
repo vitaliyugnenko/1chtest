@@ -6,6 +6,8 @@ import addIcon from "./assets/add.png";
 import settingsicon from "./assets/settings.png";
 import gasLess from "./assets/gasless-night_2-1.webp";
 
+import CryptoPrice from "./CryptoPrice";
+
 function Swap() {
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
@@ -36,15 +38,15 @@ function Swap() {
                 </div>
               </div>
             </div>
-            <div
-              className="source-token-input"
-              onClick={() => setSwapSelectToken(true)}
-            >
+            <div className="source-token-input">
               <div className="source-title">
                 <span>You pay</span>
               </div>
               <div className="selected-token">
-                <div className="select-source-token">
+                <div
+                  className="select-source-token"
+                  onClick={() => setSwapSelectToken(true)}
+                >
                   <img
                     className="selected-token-icon"
                     src="https://tokens.1inch.io/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270.png"
@@ -95,15 +97,15 @@ function Swap() {
                 </svg>
               </div>
             </div>
-            <div
-              className="destination-token-input"
-              onClick={() => setSwapSelectToken(true)}
-            >
+            <div className="destination-token-input">
               <div className="destination-title">
-                <span>You pay</span>
+                <span>You receive</span>
               </div>
               <div className="selected-token">
-                <div className="select-destination-token">
+                <div
+                  className="select-destination-token"
+                  onClick={() => setSwapSelectToken(true)}
+                >
                   <img
                     className="selected-token-icon"
                     src="https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png"
@@ -249,6 +251,8 @@ function Swap() {
           </>
         )}
         {swapSelectToken && <SwapSelectToken SwapSelect={setSwapSelectToken} />}
+
+        <CryptoPrice />
       </div>
     </div>
   );

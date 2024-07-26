@@ -7,6 +7,11 @@ import usdtIcon from "./assets/usdt.webp";
 import wbtcIcon from "./assets/wbtc.webp";
 import deIcon from "./assets/de.webp";
 import pinIcon from "./assets/pin.svg";
+import linkIcon from "./assets/LINK.webp";
+import uniIcon from "./assets/uni.webp";
+import grtIcon from "./assets/grt.webp";
+import ldoIcon from "./assets/ldo.webp";
+import aaveIcon from "./assets/aave.webp";
 
 import backIcon from "./assets/back.png";
 
@@ -96,12 +101,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={usdcIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>USD Coin</div>
+                <div>0 USDC</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -111,12 +116,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={wbtcIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>Wrapped BTC</div>
+                <div>0 WBTC</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -126,12 +131,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={linkIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>ChainLink Token</div>
+                <div>0 LINK</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -141,12 +146,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={uniIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>Uniswap</div>
+                <div>0 UNI</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -156,12 +161,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={daiIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>(PoS Dai Stablecoin)</div>
+                <div>0 DAI</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -171,12 +176,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={maticIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>MATIC</div>
+                <div>0 MATIC</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -186,12 +191,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={grtIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>Graph Token (PoS)</div>
+                <div>0 GRT</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -201,12 +206,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={ldoIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>Lido DAO Token (PoS)</div>
+                <div>0 LDO</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
@@ -216,12 +221,12 @@ function SwapSelectToken({ SwapSelect }) {
           </div>
           <div className="tokens-list-wrapper-item">
             <div className="tokens-list-wrapper-item-icon">
-              <img src={usdtIcon} />
+              <img src={aaveIcon} />
             </div>
             <div className="tokens-list-wrapper-item-name">
               <div className="tokens-list-wrapper-item-name-amount">
-                <div>Tether USD</div>
-                <div>0 USDT</div>
+                <div>Aave</div>
+                <div>0 AAVE</div>
               </div>
               <div className="tokens-list-wrapper-item-name-amount-usd">$0</div>
             </div>
