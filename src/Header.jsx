@@ -65,6 +65,8 @@ function Header() {
   const [walletAddress, setWalletAddress] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownBridgeVisible, setDropdownBridgeVisible] = useState(false);
+  const [dropdownNetworksVisible, setDropdownNetworksVisible] = useState(false);
+  const [dropdownTradeVisible, setDropdownTradeVisible] = useState(false);
 
   const handleConnectWallet = async () => {
     setError();
@@ -132,7 +134,11 @@ function Header() {
           </div>
         </a>
         <div className="header-nav-menu">
-          <div className="nav-menu-item">
+          <div
+            className="nav-menu-item"
+            onMouseEnter={() => setDropdownTradeVisible(true)}
+            onMouseLeave={() => setDropdownTradeVisible(false)}
+          >
             <span>Trade</span>
             <svg
               id="arrow"
@@ -148,6 +154,38 @@ function Header() {
                 strokeLinejoin="round"
               ></path>
             </svg>
+            {dropdownTradeVisible && (
+              <div
+                className={`dropdown-trade ${
+                  dropdownTradeVisible ? "visible" : ""
+                }`}
+              >
+                <a className="dropdown-trade-item">
+                  <img src={simpleModeIcon} />
+                  <div
+                    id="dropdown-trade-item-selected"
+                    className="dropdown-trade-item-content"
+                  >
+                    <h2>Simple mode</h2>
+                    <span>The most user-friendly way to trade</span>
+                  </div>
+                </a>
+                <a className="dropdown-trade-item">
+                  <img src={advancedModeIcon} />
+                  <div className="dropdown-trade-item-content">
+                    <h2>Advanced mode</h2>
+                    <span>Take advantage of all the familiar tools</span>
+                  </div>
+                </a>
+                <a className="dropdown-trade-item">
+                  <img src={limitOrderIcon} />
+                  <div className="dropdown-trade-item-content">
+                    <h2>Limit order</h2>
+                    <span>Schedule a swap to get the best price</span>
+                  </div>
+                </a>
+              </div>
+            )}
           </div>
           <div className="nav-menu-item">
             <span className="nav-menu-item-dao">DAO</span>
@@ -172,6 +210,59 @@ function Header() {
                 strokeLinejoin="round"
               ></path>
             </svg>
+
+            {dropdownBridgeVisible && (
+              <div
+                className={`dropdownBridges ${
+                  dropdownBridgeVisible ? "visible" : ""
+                }`}
+              >
+                <a className="dropdownBridges-item">
+                  <img src={bnbIcon} />
+                  <span>BNB Chain bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={polygonIcon} />
+                  <span>Polygon bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={optimismIcon} />
+                  <span>Optimism bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={arbitrumIcon} />
+                  <span>Arbitrum bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={gnosisIcon} />
+                  <span>Gnosis Chain bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={avalancheIcon} />
+                  <span>Avalanche bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={fantomIcon} />
+                  <span>Fantom bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={klaytnIcon} />
+                  <span>Klaytn bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={auroraIcon} />
+                  <span>Aurora bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={zksyncIcon} />
+                  <span>zkSync Era bridge</span>
+                </a>
+                <a className="dropdownBridges-item">
+                  <img src={baseIcon} />
+                  <span>Base bridge</span>
+                </a>
+              </div>
+            )}
           </div>
           <div className="nav-menu-item">
             <a href="http://portfolio.1inch.io/#/" target="_blank">
@@ -190,7 +281,10 @@ function Header() {
         </div>
       </div>
       <div className="header-buttons">
-        <div className="network-button">
+        <div
+          className="network-button"
+          onClick={() => setDropdownNetworksVisible(!dropdownNetworksVisible)}
+        >
           <button>
             <svg
               id="polygon"
@@ -223,6 +317,67 @@ function Header() {
               ></path>
             </svg>
           </button>
+          {dropdownNetworksVisible && (
+            <div
+              className={`dropdown-networks ${
+                dropdownNetworksVisible ? "visible" : ""
+              }`}
+            >
+              <a className="dropdown-networks-item">
+                <img src={ethereumIcon} />
+                <span>Ethereum</span>
+              </a>
+
+              <a className="dropdown-networks-item l2">
+                <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+                <img src={arbitrumIcon} />
+                <span>Arbitrum</span>
+              </a>
+              <a className="dropdown-networks-item l2">
+                <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+                <img src={optimismIcon} />
+                <span>Optimism</span>
+              </a>
+              <a className="dropdown-networks-item l2">
+                <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+                <img src={zksyncIcon} />
+                <span>zkSync Era</span>
+              </a>
+              <a className="dropdown-networks-item l2">
+                <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
+                <img src={baseIcon} />
+                <span>Base</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={bnbIcon} />
+                <span>BNB Chain</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={polygonIcon} />
+                <span>Polygon</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={gnosisIcon} />
+                <span>Gnosis</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={avalancheIcon} />
+                <span>Avalanche</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={fantomIcon} />
+                <span>Fantom</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={klaytnIcon} />
+                <span>Klaytn</span>
+              </a>
+              <a className="dropdown-networks-item">
+                <img src={auroraIcon} />
+                <span>Aurora</span>
+              </a>
+            </div>
+          )}
         </div>
         <div className="account-button">
           {walletAddress ? (
@@ -692,138 +847,6 @@ function Header() {
           </div>
         </div>
       )}
-
-      {dropdownBridgeVisible && (
-        <div className="dropdownBridges">
-          <a className="dropdownBridges-item">
-            <img src={bnbIcon} />
-            <span>BNB Chain bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={polygonIcon} />
-            <span>Polygon bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={optimismIcon} />
-            <span>Optimism bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={arbitrumIcon} />
-            <span>Arbitrum bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={gnosisIcon} />
-            <span>Gnosis Chain bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={avalancheIcon} />
-            <span>Avalanche bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={fantomIcon} />
-            <span>Fantom bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={klaytnIcon} />
-            <span>Klaytn bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={auroraIcon} />
-            <span>Aurora bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={zksyncIcon} />
-            <span>zkSync Era bridge</span>
-          </a>
-          <a className="dropdownBridges-item">
-            <img src={baseIcon} />
-            <span>Base bridge</span>
-          </a>
-        </div>
-      )}
-
-      <div className="dropdown-networks">
-        <a className="dropdown-networks-item">
-          <img src={ethereumIcon} />
-          <span>Ethereum</span>
-        </a>
-
-        <a className="dropdown-networks-item l2">
-          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
-          <img src={arbitrumIcon} />
-          <span>Arbitrum</span>
-        </a>
-        <a className="dropdown-networks-item l2">
-          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
-          <img src={optimismIcon} />
-          <span>Optimism</span>
-        </a>
-        <a className="dropdown-networks-item l2">
-          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
-          <img src={zksyncIcon} />
-          <span>zkSync Era</span>
-        </a>
-        <a className="dropdown-networks-item l2">
-          <img src={l2Icon} className="dropdown-networks-item-l2-icon" />
-          <img src={baseIcon} />
-          <span>Base</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={bnbIcon} />
-          <span>BNB Chain</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={polygonIcon} />
-          <span>Polygon</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={gnosisIcon} />
-          <span>Gnosis</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={avalancheIcon} />
-          <span>Avalanche</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={fantomIcon} />
-          <span>Fantom</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={klaytnIcon} />
-          <span>Klaytn</span>
-        </a>
-        <a className="dropdown-networks-item">
-          <img src={auroraIcon} />
-          <span>Aurora</span>
-        </a>
-      </div>
-
-      <div className="dropdown-trade">
-        <a className="dropdown-trade-item">
-          <img src={simpleModeIcon} />
-          <div
-            id="dropdown-trade-item-selected"
-            className="dropdown-trade-item-content"
-          >
-            <h2>Simple mode</h2>
-            <span>The most user-friendly way to trade</span>
-          </div>
-        </a>
-        <a className="dropdown-trade-item">
-          <img src={advancedModeIcon} />
-          <div className="dropdown-trade-item-content">
-            <h2>Advanced mode</h2>
-            <span>Take advantage of all the familiar tools</span>
-          </div>
-        </a>
-        <a className="dropdown-trade-item">
-          <img src={limitOrderIcon} />
-          <div className="dropdown-trade-item-content">
-            <h2>Limit order</h2>
-            <span>Schedule a swap to get the best price</span>
-          </div>
-        </a>
-      </div>
     </div>
   );
 }
