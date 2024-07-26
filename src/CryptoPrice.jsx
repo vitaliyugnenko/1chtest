@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const CryptoPrice = ({ symbol }) => {
+const CryptoPrice = () => {
+  const symbol = "DAI"; // Жестко задаем символ для тестирования
   const [price, setPrice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,19 +12,21 @@ const CryptoPrice = ({ symbol }) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(
-          `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`,
-          {
-            params: {
-              symbol: symbol,
-              convert: "USD",
-            },
-            headers: {
-              "X-CMC_PRO_API_KEY": "48d81810-7c07-454d-a289-436eeb9e9743",
-            },
-          }
-        );
-        setPrice(response.data.data[symbol].quote.USD.price);
+        const response = await axios.get("http://localhost:3000/crypto", {
+          params: {
+            symbol: symbol,
+            convert: "USD",
+          },
+        });
+
+        // Логирование для отладки
+        console.log("API Response:", response.data);
+
+        if (response.data.data && response.data.data[symbol]) {
+          setPrice(response.data.data[symbol].quote.USD.price);
+        } else {
+          setError(`Symbol ${symbol} not found in response`);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,7 +35,7 @@ const CryptoPrice = ({ symbol }) => {
     };
 
     fetchPrice();
-  }, [symbol]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -45,7 +48,7 @@ const CryptoPrice = ({ symbol }) => {
   return (
     <div>
       <h1>{symbol} Price</h1>
-      <p>${price.toFixed(2)}</p>
+      <p>${price ? price.toFixed(2) : "N/A"}</p>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import SwapSelectToken from "./SwapSelectToken";
 import restartIcon from "./assets/restart.png";
@@ -6,11 +7,51 @@ import addIcon from "./assets/add.png";
 import settingsicon from "./assets/settings.png";
 import gasLess from "./assets/gasless-night_2-1.webp";
 
-import CryptoPrice from "./CryptoPrice";
-
 function Swap() {
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
+
+  const [price, setPrice] = useState(null);
+  const [percent_changed, setPercentChanged] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const symbol = "DAI"; // Жестко задаем символ для тестирования
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get("http://localhost:3000/crypto", {
+          params: {
+            symbol: symbol,
+            convert: "USD",
+          },
+        });
+
+        // Логирование для отладки
+        console.log("API Response:", response.data);
+
+        if (response.data.data && response.data.data[symbol]) {
+          const roundedPrice =
+            response.data.data[symbol].quote.USD.price.toFixed(6);
+          const roundedPercentChanged =
+            response.data.data[symbol].quote.USD.percent_change_1h.toFixed(2);
+          setPrice(roundedPrice);
+          setPercentChanged(roundedPercentChanged);
+        } else {
+          setError(`Symbol ${symbol} not found in response`);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrice();
+  }, []);
 
   return (
     <div className="page-content">
@@ -129,11 +170,13 @@ function Swap() {
                     ></path>
                   </svg>
                 </div>
-                <div className="destination-token-amount">0.515583</div>
+                <div className="destination-token-amount">{price}</div>
               </div>
               <div className="token-info">
                 <span className="token-name">(PoS) Dai Stablecoin</span>
-                <div className="token-amount">~$0.516131 (-3.3%)</div>
+                <div className="token-amount">
+                  ~${price} ({percent_changed})
+                </div>
               </div>
             </div>
             <div className="swap-from">
@@ -251,8 +294,6 @@ function Swap() {
           </>
         )}
         {swapSelectToken && <SwapSelectToken SwapSelect={setSwapSelectToken} />}
-
-        <CryptoPrice />
       </div>
     </div>
   );
