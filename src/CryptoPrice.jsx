@@ -12,7 +12,7 @@ const CryptoPrice = ({ symbol }) => {
       setError(null);
       try {
         const response = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`,
+          `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`,
           {
             params: {
               symbol: symbol,
