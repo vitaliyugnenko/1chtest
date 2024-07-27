@@ -1209,3 +1209,17 @@
     display: none;
   }
 }
+
+@media (max-width: 840px) {
+  .header-nav-menu {
+    display: none;
+  }
+
+  #text {
+    display: none;
+  }
+
+  .network-button {
+    display: none;
+  }
+}
