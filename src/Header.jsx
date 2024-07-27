@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import logo from "./assets/logo.webp";
 import metamask from "./assets/metamask.svg";
 import bnbIcon from "./assets/bnb.svg";

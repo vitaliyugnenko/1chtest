@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { ethers } from "ethers";
+import { BrowserProvider } from "ethers";
 
 import SwapSelectToken from "./SwapSelectToken";
 import SwapSelectSourceToken from "./SwapSelectSourceToken";
@@ -21,6 +23,76 @@ import uniIcon from "./assets/uni.webp";
 import grtIcon from "./assets/grt.webp";
 import ldoIcon from "./assets/ldo.webp";
 import aaveIcon from "./assets/aave.webp";
+
+const formatAddress = (address) => {
+  if (!address) return "";
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+const checkWalletConnection = async ({ setWalletAddress, setError }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
+
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts.length > 0) {
+      const walletAddress = accounts[0];
+      setWalletAddress(formatAddress(walletAddress));
+      console.log("Wallet Address:", walletAddress);
+    }
+  } catch (err) {
+    setError(err.message);
+    console.log(err.message);
+  }
+};
+
+const connectWallet = async ({ setWalletAddress, setError }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
+
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    if (accounts.length > 0) {
+      const walletAddress = accounts[0];
+      setWalletAddress(formatAddress(walletAddress));
+      console.log("Wallet Address:", walletAddress);
+    }
+  } catch (err) {
+    setError(err.message);
+    console.log(err.message);
+  }
+};
+//console.log(ethers);
+//const { ethereum } = window as any;
+//console.log(window.ethereum);
+//const provider = new BrowserProvider(window.ethereum);
+//console.log(provider);
+
+console.log(ethers.utils);
+
+const sendTransaction = async ({ setError }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
+
+    //const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+
+    console.log(signer);
+    const tx = await signer.sendTransaction({
+      to: "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0", // Укажите здесь адрес получателя
+      value: ethers.parseEther("0.01"), // Укажите здесь количество ETH для отправки
+    });
+
+    console.log("Transaction Hash:", tx.hash);
+  } catch (err) {
+    setError(err.message);
+    console.log(err.message);
+  }
+};
 
 function Swap({
   selectedToken,
@@ -54,6 +126,16 @@ function Swap({
     GRT: grtIcon,
     LDO: ldoIcon,
     AAVE: aaveIcon,
+  };
+
+  const handleConnectWallet = async () => {
+    setError();
+    await connectWallet({ setWalletAddress, setError });
+  };
+
+  const handleSendTransaction = async () => {
+    setError();
+    await sendTransaction({ setError });
   };
 
   useEffect(() => {
@@ -326,7 +408,7 @@ function Swap({
               )}
             </div>
             <div className="swap-button-container">
-              <button className="swap-button">
+              <button className="swap-button" onClick={handleSendTransaction}>
                 <span className="swap-button-content">
                   <svg
                     width="24"
