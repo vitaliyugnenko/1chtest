@@ -1251,5 +1251,6 @@
 
   .swap-from {
     width: 100%;
+    text-wrap: nowrap;
   }
 }
