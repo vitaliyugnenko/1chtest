@@ -1222,4 +1222,12 @@
   .network-button {
     display: none;
   }
+
+  .page-content {
+    width: 100vw;
+  }
+
+  .swap-container {
+    width: 100%;
+  }
 }
