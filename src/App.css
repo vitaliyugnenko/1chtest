@@ -1253,4 +1253,12 @@ svg#arrow-swap {
     width: 100%;
     text-wrap: nowrap;
   }
+
+  .account-button-wallet-disconnected {
+    text-wrap: nowrap;
+  }
+
+  .swap-container-select {
+    width: 100%;
+  }
 }
