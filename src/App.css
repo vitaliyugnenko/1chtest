@@ -1230,4 +1230,17 @@
   .swap-container {
     width: 100%;
   }
+
+  .source-token-input {
+    width: 100%;
+  }
+
+  .destination-token-input {
+    width: 100%;
+  }
+
+  .footer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
