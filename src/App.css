@@ -1204,6 +1204,11 @@
   margin-left: 16px;
 }
 
+.arrow-swap {
+  width: 16px;
+  height: 16px;
+}
+
 @media (max-width: 1336px) {
   .header-nav-menu {
     display: none;
@@ -1242,5 +1247,9 @@
   .footer {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .swap-from {
+    width: 100%;
   }
 }
