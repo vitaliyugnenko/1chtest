@@ -337,6 +337,8 @@ function Swap({
                       viewBox="0 0 17 16"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
+                      width="16" // Убедитесь, что эти атрибуты заданы
+                      height="16" // Убедитесь, что эти атрибуты заданы
                     >
                       <path
                         d="M4.125 6L8.125 10L12.125 6"
