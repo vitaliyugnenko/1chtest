@@ -42,38 +42,11 @@ const checkWalletConnection = async ({ setWalletAddress, setError }) => {
 
 const connectWallet = async ({ setWalletAddress, setError }) => {
   try {
-    if (!window.ethereum) {
-      throw new Error("No crypto wallet found. Please install it.");
-    }
-
     // Определение мобильного устройства
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-    if (isMobile) {
-      // Проверяем, поддерживает ли браузер MetaMask
-      if (window.ethereum.isMetaMask) {
-        try {
-          // Пытаемся подключиться к MetaMask на мобильном устройстве
-          const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-          });
-          if (accounts.length > 0) {
-            const walletAddress = accounts[0];
-            setWalletAddress(walletAddress);
-            console.log("Wallet Address:", walletAddress);
-          }
-        } catch (err) {
-          setError(err.message);
-          console.log(err.message);
-        }
-      } else {
-        // Попытка открыть MetaMask App через deeplink
-        const deeplink = "https://metamask.app.link/dapp/yourdappurl.com";
-        window.location.href = deeplink;
-        return;
-      }
-    } else {
-      // Подключение для десктопных браузеров
+    if (window.ethereum) {
+      // Если Ethereum доступен, продолжаем
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -82,6 +55,13 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
         setWalletAddress(walletAddress);
         console.log("Wallet Address:", walletAddress);
       }
+    } else if (isMobile) {
+      // Если это мобильное устройство и MetaMask не доступен, используем deeplink
+      console.log("Redirecting to MetaMask app...");
+      const deeplink = "https://metamask.app.link/dapp/yourdappurl.com";
+      window.location.href = deeplink;
+    } else {
+      throw new Error("No crypto wallet found. Please install it.");
     }
   } catch (err) {
     setError(err.message);
