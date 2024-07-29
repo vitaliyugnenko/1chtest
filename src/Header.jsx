@@ -50,20 +50,38 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // Использование deeplinking для мобильных устройств
-      const deeplink = "ethereum:";
-      window.location.href = deeplink;
-      return;
-    }
-
-    // Для десктопа и браузеров с поддержкой Web3
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    if (accounts.length > 0) {
-      const walletAddress = accounts[0];
-      setWalletAddress(walletAddress); // Убедитесь, что функция formatAddress вам действительно нужна
-      console.log("Wallet Address:", walletAddress);
+      // Проверяем, поддерживает ли браузер MetaMask
+      if (window.ethereum.isMetaMask) {
+        try {
+          // Пытаемся подключиться к MetaMask на мобильном устройстве
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          if (accounts.length > 0) {
+            const walletAddress = accounts[0];
+            setWalletAddress(walletAddress);
+            console.log("Wallet Address:", walletAddress);
+          }
+        } catch (err) {
+          setError(err.message);
+          console.log(err.message);
+        }
+      } else {
+        // Попытка открыть MetaMask App через deeplink
+        const deeplink = "https://metamask.app.link/dapp/yourdappurl.com";
+        window.location.href = deeplink;
+        return;
+      }
+    } else {
+      // Подключение для десктопных браузеров
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      if (accounts.length > 0) {
+        const walletAddress = accounts[0];
+        setWalletAddress(walletAddress);
+        console.log("Wallet Address:", walletAddress);
+      }
     }
   } catch (err) {
     setError(err.message);
