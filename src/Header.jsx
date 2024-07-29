@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+
+import Web3Modal from "web3modal";
+import { ethers } from "ethers";
+
 import logo from "./assets/logo.webp";
 import metamask from "./assets/metamask.svg";
 import bnbIcon from "./assets/bnb.svg";
@@ -23,6 +27,7 @@ const formatAddress = (address) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
+/*
 const checkWalletConnection = async ({ setWalletAddress, setError }) => {
   try {
     if (!window.ethereum)
@@ -67,7 +72,7 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
     setError(err.message);
     console.log(err.message);
   }
-};
+};*/
 
 function Header() {
   const [error, setError] = useState();
@@ -77,6 +82,10 @@ function Header() {
   const [dropdownNetworksVisible, setDropdownNetworksVisible] = useState(false);
   const [dropdownTradeVisible, setDropdownTradeVisible] = useState(false);
 
+  const [provider, setProvider] = useState(null);
+  const [web3Modal, setWeb3Modal] = useState(null);
+
+  /*
   const handleConnectWallet = async () => {
     setError();
     await connectWallet({ setWalletAddress, setError });
@@ -105,7 +114,42 @@ function Header() {
     } else {
       console.log("No crypto wallet found. Please install it.");
     }
+  }, []);*/
+
+  useEffect(() => {
+    const initWeb3Modal = async () => {
+      const modal = new Web3Modal({
+        cacheProvider: true, // Сохранение выбранного провайдера между сессиями
+      });
+      setWeb3Modal(modal);
+    };
+    initWeb3Modal();
   }, []);
+
+  const connectWallet = async () => {
+    try {
+      const instance = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(instance);
+      setProvider(provider);
+
+      const accounts = await provider.listAccounts();
+      setWalletAddress(accounts.length ? accounts[0] : "");
+    } catch (err) {
+      console.error("Connection error:", err);
+    }
+  };
+  /*
+  const disconnectWallet = async () => {
+    web3Modal.clearCachedProvider();
+    setProvider(null);
+    setWalletAddress("");
+  };
+*/
+  useEffect(() => {
+    if (web3Modal && web3Modal.cachedProvider) {
+      connectWallet();
+    }
+  }, [web3Modal]);
 
   return (
     <div className="header-container">
@@ -392,7 +436,7 @@ function Header() {
           {walletAddress ? (
             <button
               className="account-button-wallet-connected"
-              onClick={handleConnectWallet}
+              onClick={/*handleConnectWallet*/ connectWallet}
             >
               <img src={metamask} alt="MetaMask" />
               <span>{walletAddress}</span>
