@@ -42,15 +42,27 @@ const checkWalletConnection = async ({ setWalletAddress, setError }) => {
 
 const connectWallet = async ({ setWalletAddress, setError }) => {
   try {
-    if (!window.ethereum)
+    if (!window.ethereum) {
       throw new Error("No crypto wallet found. Please install it.");
+    }
 
+    // Определение мобильного устройства
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Использование deeplinking для мобильных устройств
+      const deeplink = "ethereum:";
+      window.location.href = deeplink;
+      return;
+    }
+
+    // Для десктопа и браузеров с поддержкой Web3
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
     if (accounts.length > 0) {
       const walletAddress = accounts[0];
-      setWalletAddress(formatAddress(walletAddress));
+      setWalletAddress(walletAddress); // Убедитесь, что функция formatAddress вам действительно нужна
       console.log("Wallet Address:", walletAddress);
     }
   } catch (err) {
