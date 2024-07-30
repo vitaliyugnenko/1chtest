@@ -143,7 +143,7 @@ function Swap({
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get("http://localhost:3000/crypto", {
+        const response = await axios.get("https://1chtest.vercel.app/crypto", {
           params: {
             symbol: selectedToken,
             convert: "USD",
