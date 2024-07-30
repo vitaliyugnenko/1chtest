@@ -144,7 +144,7 @@ function Swap({
       setError(null);
       try {
         const response = await axios.get(
-          "https://1chtest.vercel.app/proxy/crypto",
+          "https://1chtest.vercel.app/api/proxy/crypto",
           {
             params: {
               symbol: selectedToken,
