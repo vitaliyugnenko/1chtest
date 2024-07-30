@@ -1234,6 +1234,8 @@ svg#arrow-swap {
 
   .swap-container {
     width: 100%;
+    height: 75vh;
+    overflow-y: scroll;
   }
 
   .source-token-input {
@@ -1260,5 +1262,19 @@ svg#arrow-swap {
 
   .swap-container-select {
     width: 100%;
+  }
+
+  .header-left-col {
+    width: 70px;
+  }
+
+  .header-buttons {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header-buttons svg {
+    margin-top: auto;
   }
 }
