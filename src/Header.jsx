@@ -293,7 +293,9 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="header-buttons"></div>
+      <div className="header-buttons">
+        <ConnectButton />
+      </div>
 
       {dropdownVisible && (
         <div className="header-menu-dropdown">
@@ -690,7 +692,6 @@ function Header() {
           </div>
         </div>
       )}
-      <ConnectButton />
     </div>
   );
 }

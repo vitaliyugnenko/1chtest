@@ -16,7 +16,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={darkTheme()}>
+        <RainbowKitProvider
+          theme={darkTheme({
+            color: "green",
+            fontWeight: 400,
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+            flexDirection: "row",
+          })}
+        >
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
