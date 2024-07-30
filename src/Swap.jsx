@@ -143,12 +143,15 @@ function Swap({
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get("/api/crypto", {
-          params: {
-            symbol: selectedToken,
-            convert: "USD",
-          },
-        });
+        const response = await axios.get(
+          "https://1inchapi88888.vercel.app/api/crypto",
+          {
+            params: {
+              symbol: selectedToken,
+              convert: "USD",
+            },
+          }
+        );
 
         // Логирование для отладки
         console.log("API Response:", response.data);
