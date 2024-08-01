@@ -294,7 +294,12 @@ function Header() {
         </div>
       </div>
       <div className="header-buttons">
-        <ConnectButton />
+        <ConnectButton
+          showBalance={{
+            smallScreen: true,
+            largeScreen: true,
+          }}
+        />
       </div>
 
       {dropdownVisible && (

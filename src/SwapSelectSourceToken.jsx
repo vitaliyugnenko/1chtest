@@ -15,17 +15,17 @@ import aaveIcon from "./assets/aave.webp";
 
 import backIcon from "./assets/back.png";
 
-function SwapSelectSourceToken({ SwapSelect, SelectToken }) {
+function SwapSelectSourceToken({ SwapSelect, setTokenYouPayName }) {
   const setSwapSelect = () => {
     SwapSelect(false);
   };
 
   const setSelectedToken = (token) => {
-    SelectToken(token);
+    setTokenYouPayName(token);
   };
 
   const handleTokenSelect = (token) => {
-    SelectToken(token); // Установка выбранного токена
+    setTokenYouPayName(token); // Установка выбранного токена
     SwapSelect(false); // Закрытие окна выбора токенов
   };
 

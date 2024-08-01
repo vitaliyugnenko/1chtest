@@ -24,6 +24,9 @@ import grtIcon from "./assets/grt.webp";
 import ldoIcon from "./assets/ldo.webp";
 import aaveIcon from "./assets/aave.webp";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const formatAddress = (address) => {
   if (!address) return "";
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -70,7 +73,7 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
 //const provider = new BrowserProvider(window.ethereum);
 //console.log(provider);
 
-console.log(ethers.utils);
+//console.log(ethers.utils);
 
 const sendTransaction = async ({ setError }) => {
   try {
@@ -97,17 +100,27 @@ const sendTransaction = async ({ setError }) => {
 function Swap({
   selectedToken,
   setSelectedToken,
-  selectedSourceToken,
+  //selectedSourceToken,
   setSelectedSourceToken,
 }) {
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
   const [swapSelectSourceToken, setSwapSelectSourceToken] = useState(false);
 
-  const [price, setPrice] = useState(null);
+  const [priceTokenYouReceive, setPriceTokenYouReceive] = useState(null);
   const [priceSource, setPriceSource] = useState(null);
   const [percent_changed, setPercentChanged] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [selCoinName, setSelCoinName] = useState(null);
+  const [tokenYouReceiveName, setTokenYouReceiveName] = useState("DAI");
+  /****** */
+  const [priceYouPay, setPriceYouPay] = useState(null);
+  const [tokenYouPayName, setTokenYouPayName] = useState("USDT");
+  const [tokenYouPayFullName, setTokenYouPayFullName] = useState("Tether USDT");
+  const [tokenYouPayQuantity, setTokenYouPayQuantity] = useState(1);
+
+  /****** */
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const symbol = "DAI"; // Жестко задаем символ для тестирования
@@ -147,39 +160,71 @@ function Swap({
           "https://1inchapi88888.vercel.app/api/crypto",
           {
             params: {
-              symbol: selectedToken,
+              symbol: tokenYouReceiveName,
               convert: "USD",
             },
           }
         );
 
-        // Логирование для отладки
-        console.log("API Response:", response.data);
-
-        if (response.data.data && response.data.data[selectedToken]) {
-          const roundedPrice =
-            response.data.data[selectedToken].quote.USD.price.toFixed(6);
-          const roundedPercentChanged =
-            response.data.data[
-              selectedToken
-            ].quote.USD.percent_change_1h.toFixed(2);
-          setPrice(roundedPrice);
-          setPercentChanged(roundedPercentChanged);
-        } else {
-          setError(`Symbol ${selectedToken} not found in response`);
+        const responseTokenYouPay = await axios.get(
+          "https://1inchapi88888.vercel.app/api/crypto",
+          {
+            params: {
+              symbol: tokenYouPayName,
+              convert: "USD",
+            },
+          }
+        );
+        /*
+        console.log(responseTokenYouPay.data.data[tokenYouPayName].name);
+        console.log(
+          responseTokenYouPay.data.data[
+            tokenYouPayName
+          ].quote.USD.price.toFixed(6)
+        );*/
+        if (response.data.data && response.data.data[tokenYouReceiveName]) {
+          const roundedPriceTokenYouPay =
+            responseTokenYouPay.data.data[
+              tokenYouPayName
+            ].quote.USD.price.toFixed(6);
+          setPriceYouPay(roundedPriceTokenYouPay);
+          setTokenYouPayFullName(
+            responseTokenYouPay.data.data[tokenYouPayName].name
+          );
         }
 
-        if (response.data.data && response.data.data[selectedSourceToken]) {
+        // Логирование для отладки
+        //console.log(response.data.data[selectedToken]);
+        //console.log(selectedToken);
+
+        if (response.data.data && response.data.data[tokenYouReceiveName]) {
           const roundedPrice =
-            response.data.data[selectedSourceToken].quote.USD.price.toFixed(6);
+            response.data.data[tokenYouReceiveName].quote.USD.price.toFixed(6);
           const roundedPercentChanged =
             response.data.data[
-              selectedSourceToken
+              tokenYouReceiveName
+            ].quote.USD.percent_change_1h.toFixed(2);
+          setPriceTokenYouReceive(roundedPrice);
+          setPercentChanged(roundedPercentChanged);
+          const selectedTokenName =
+            response.data.data[tokenYouReceiveName].name;
+          //console.log(response.data.data[selectedToken].name);
+          setSelCoinName(selectedTokenName);
+        } else {
+          setError(`Symbol ${tokenYouReceiveName} not found in response`);
+        }
+
+        if (response.data.data && response.data.data[tokenYouPayName]) {
+          const roundedPrice =
+            response.data.data[tokenYouPayName].quote.USD.price.toFixed(6);
+          const roundedPercentChanged =
+            response.data.data[
+              tokenYouPayName
             ].quote.USD.percent_change_1h.toFixed(2);
           setPriceSource(roundedPrice);
           setPercentChanged(roundedPercentChanged);
         } else {
-          setError(`Symbol ${selectedSourceToken} not found in response`);
+          setError(`Symbol ${tokenYouPayName} not found in response`);
         }
       } catch (err) {
         setError(err.message);
@@ -189,7 +234,9 @@ function Swap({
     };
 
     fetchPrice();
-  }, [selectedToken, selectedSourceToken]);
+  }, [tokenYouReceiveName, tokenYouPayName]);
+
+  console.log(tokenYouPayQuantity);
 
   return (
     <div className="page-content">
@@ -228,11 +275,11 @@ function Swap({
                 >
                   <img
                     className="selected-token-icon"
-                    src={tokenIcons[selectedSourceToken]}
+                    src={tokenIcons[tokenYouPayName]}
                     alt=""
                   />
                   <span className="selected-token-symbol">
-                    {selectedSourceToken}
+                    {tokenYouPayName}
                   </span>
                   <svg
                     id="arrow-down"
@@ -251,11 +298,27 @@ function Swap({
                     ></path>
                   </svg>
                 </div>
-                <div className="source-token-amount">1</div>
+                <input
+                  type="number"
+                  value={tokenYouPayQuantity}
+                  onChange={(e) => setTokenYouPayQuantity(e.target.value)}
+                  className="source-token-amount-input"
+                  style={{
+                    WebkitAppearance: "none",
+                    MozAppearance: "textfield",
+                    color: "white",
+                    textAlign: "right",
+                    border: "none",
+                    outline: "none",
+                    backgroundColor: "transparent",
+                    fontSize: "24px",
+                    fontWeight: 400,
+                  }}
+                />
               </div>
               <div className="token-info">
-                <span className="token-name">Wrapped Matic</span>
-                <div className="token-amount">{priceSource}</div>
+                <span className="token-name">{tokenYouPayFullName}</span>
+                <div className="token-amount">{priceYouPay}</div>
               </div>
             </div>
             <div className="swap-separator">
@@ -289,10 +352,12 @@ function Swap({
                 >
                   <img
                     className="selected-token-icon"
-                    src={tokenIcons[selectedToken]}
+                    src={tokenIcons[tokenYouReceiveName]}
                     alt=""
                   />
-                  <span className="selected-token-symbol">{selectedToken}</span>
+                  <span className="selected-token-symbol">
+                    {tokenYouReceiveName}
+                  </span>
                   <svg
                     id="arrow-down"
                     width="16"
@@ -310,23 +375,40 @@ function Swap({
                     ></path>
                   </svg>
                 </div>
-                <div className="destination-token-amount">{price}</div>
+                <div className="destination-token-amount">
+                  {loading ? (
+                    <Skeleton height={20} />
+                  ) : (
+                    (tokenYouPayQuantity / priceTokenYouReceive).toFixed(5)
+                  )}
+                </div>
               </div>
               <div className="token-info">
-                <span className="token-name">(PoS) Dai Stablecoin</span>
+                <span className="token-name">{tokenYouReceiveName}</span>
                 <div className="token-amount">
-                  ~${price} ({percent_changed})
+                  ~$
+                  {(
+                    priceTokenYouReceive *
+                    (tokenYouPayQuantity / priceTokenYouReceive).toFixed(5)
+                  ).toFixed(6)}{" "}
+                  ({percent_changed})
                 </div>
               </div>
             </div>
             <div className="swap-from">
               <button onClick={() => setSwapFromExpand(!swapFromExpand)}>
                 <div className="swap-from-button-title">
-                  <span className="from-token-amount">1 WMATIC</span>
+                  <span className="from-token-amount">
+                    1 {tokenYouReceiveName}
+                  </span>
                   <span className="from-token-equal">=</span>
-                  <p className="from-token-rate">0.483403</p>
-                  <span className="from-token-name">DAI</span>
-                  <span className="usd-value">(~$0.48)</span>
+                  <p className="from-token-rate">
+                    {(priceTokenYouReceive / priceYouPay).toFixed(4)}
+                  </p>
+                  <span className="from-token-name">{tokenYouPayName}</span>
+                  <span className="usd-value">
+                    (~${(priceTokenYouReceive / priceYouPay).toFixed(2)})
+                  </span>
                 </div>
                 {!swapFromExpand && (
                   <div className="swap-from-button-tooltip">
@@ -379,7 +461,7 @@ function Swap({
                       <span>Slippage tolerance</span>
                     </div>
                     <div id="slp-tlr" className="swap-from-expand-item-value">
-                      <span className="slp-tlr">3.3%</span>
+                      <span className="slp-tlr">2.8%</span>
                       <span className="slp-tlr">·</span>
                       <span className="slp-tlr">Auto</span>
                     </div>
@@ -392,7 +474,13 @@ function Swap({
                       id="min-receive-val"
                       className="swap-from-expand-item-value"
                     >
-                      <span className="min-receive-val">0.47709077</span>
+                      <span className="min-receive-val">
+                        {(
+                          tokenYouPayQuantity / priceTokenYouReceive -
+                          (tokenYouPayQuantity / priceTokenYouReceive / 100) *
+                            2.8
+                        ).toFixed(8)}
+                      </span>
                       <span className="min-receive-token">DAI</span>
                       <span>(~$0.47764351)</span>
                     </div>
@@ -438,13 +526,13 @@ function Swap({
         {swapSelectToken && (
           <SwapSelectToken
             SwapSelect={setSwapSelectToken}
-            SelectToken={setSelectedToken}
+            setTokenYouReceiveName={setTokenYouReceiveName}
           />
         )}
         {swapSelectSourceToken && (
           <SwapSelectSourceToken
             SwapSelect={setSwapSelectSourceToken}
-            SelectToken={setSelectedSourceToken}
+            setTokenYouPayName={setTokenYouPayName}
           />
         )}
       </div>
