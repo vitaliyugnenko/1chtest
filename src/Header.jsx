@@ -34,7 +34,7 @@ const checkWalletConnection = async ({ setWalletAddress, setError }) => {
     if (accounts.length > 0) {
       const walletAddress = accounts[0];
       setWalletAddress(formatAddress(walletAddress));
-      console.log("Wallet Address:", walletAddress);
+      //console.log("Wallet Address:", walletAddress);
     }
   } catch (err) {
     setError(err.message);
