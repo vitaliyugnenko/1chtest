@@ -100,55 +100,67 @@ function Swap() {
     setYouReceiveTokenPrice(currentPayPrice);
   };
 
-useEffect(() => {
-  const fetchNewPrice = async () => {
-    if (youPayToken && youReceiveToken) {
-      try {
-        setLoading(true);
-
-        const newTokenYouPayData = await axios.get(
-          "https://1inchapi88888.vercel.app/api/crypto",
-          {
-            params: {
-              symbol: youPayToken,
-              convert: "USD",
-            },
+  useEffect(() => {
+    const fetchNewPrice = async () => {
+      if (youPayToken && youReceiveToken) {
+        try {
+          setLoading(true);
+  
+          // Инициализация переменных для хранения цен
+          let newRoundedPriceTokenYouPay = 0;
+          let newRoundedPriceTokenYouReceive = 0;
+  
+          const newTokenYouPayData = await axios.get(
+            "https://1inchapi88888.vercel.app/api/crypto",
+            {
+              params: {
+                symbol: youPayToken,
+                convert: "USD",
+              },
+            }
+          );
+  
+          const newTokenYouReceiveData = await axios.get(
+            "https://1inchapi88888.vercel.app/api/crypto",
+            {
+              params: {
+                symbol: youReceiveToken,
+                convert: "USD",
+              },
+            }
+          );
+  
+          if (newTokenYouPayData.data.data && newTokenYouPayData.data.data[youPayToken]) {
+            newRoundedPriceTokenYouPay = parseFloat(newTokenYouPayData.data.data[youPayToken].quote.USD.price.toFixed(6));
+            setYouPayTokenPrice(newRoundedPriceTokenYouPay);
           }
-        );
-
-        const newTokenYouReceiveData = await axios.get(
-          "https://1inchapi88888.vercel.app/api/crypto",
-          {
-            params: {
-              symbol: youReceiveToken,
-              convert: "USD",
-            },
+  
+          if (newTokenYouReceiveData.data.data && newTokenYouReceiveData.data.data[youReceiveToken]) {
+            newRoundedPriceTokenYouReceive = parseFloat(newTokenYouReceiveData.data.data[youReceiveToken].quote.USD.price.toFixed(6));
+            if (newRoundedPriceTokenYouReceive === 0) {
+              console.error("Received zero price for token:", youReceiveToken);
+            }
+            setYouReceiveTokenPrice(newRoundedPriceTokenYouReceive);
+  
+            // Calculate the amount of receive token based on the latest prices and amount of pay token
+            const newAmount = (youPayTokenAmount * newRoundedPriceTokenYouPay) / newRoundedPriceTokenYouReceive;
+            console.log("Calculated youReceiveTokenAmount:", newAmount);
+            setYouReceiveTokenAmount(newAmount);
           }
-        );
-
-        if (newTokenYouPayData.data.data && newTokenYouPayData.data.data[youPayToken]) {
-          const newRoundedPriceTokenYouPay = parseFloat(newTokenYouPayData.data.data[youPayToken].quote.USD.price.toFixed(6));
-          setYouPayTokenPrice(newRoundedPriceTokenYouPay);
+  
+          setLoading(false);
+        } catch (err) {
+          console.error('Error fetching prices:', err);
+          setError(err.message);
+          setLoading(false);
         }
-
-        if (newTokenYouReceiveData.data.data && newTokenYouReceiveData.data.data[youReceiveToken]) {
-          const newRoundedPriceTokenYouReceive = parseFloat(newTokenYouReceiveData.data.data[youReceiveToken].quote.USD.price.toFixed(6));
-          setYouReceiveTokenPrice(newRoundedPriceTokenYouReceive);
-          
-          // Calculate the amount of receive token based on the latest prices and amount of pay token
-          setYouReceiveTokenAmount((youPayTokenAmount * newRoundedPriceTokenYouPay) / newRoundedPriceTokenYouReceive);
-        }
-
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
       }
-    }
-  };
-
-  fetchNewPrice();
-}, [youPayToken, youReceiveToken, youPayTokenAmount]);
+    };
+  
+    fetchNewPrice();
+  }, [youPayToken, youReceiveToken, youPayTokenAmount]);
+  
+  
 
 
   useEffect(() => {
