@@ -31,6 +31,8 @@ const sendTransaction = async ({ setError }) => {
     if (!window.ethereum)
       throw new Error("No crypto wallet found. Please install it.");
 
+    console.log(1111)
+
     //const provider = new ethers.providers.Web3Provider(window.ethereum);
     const provider = new BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
