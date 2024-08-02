@@ -1277,4 +1277,8 @@ svg#arrow-swap {
   .header-buttons svg {
     margin-top: auto;
   }
+
+  .source-token-amount-input {
+    width: 100px;
+  }
 }
