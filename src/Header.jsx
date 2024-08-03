@@ -295,6 +295,10 @@ function Header() {
       </div>
       <div className="header-buttons">
         <ConnectButton
+          chainStatus={{
+            smallScreen: "icon",
+            largeScreen: true,
+          }}
           showBalance={{
             smallScreen: true,
             largeScreen: true,
