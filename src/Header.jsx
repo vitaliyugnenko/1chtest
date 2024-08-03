@@ -15,6 +15,7 @@ import baseIcon from "./assets/base.svg";
 import ethereumIcon from "./assets/ethereum.svg";
 import l2Icon from "./assets/l2.svg";
 import simpleModeIcon from "./assets/simple-mode.svg";
+import simpleModeIconDark from "./assets/simple-mode-dark.svg";
 import advancedModeIcon from "./assets/advanced-mode.svg";
 import limitOrderIcon from "./assets/limit-order.svg";
 
@@ -80,9 +81,19 @@ function Header() {
   const [dropdownTradeVisible, setDropdownTradeVisible] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isTradeOpen, setIsTradeOpen] = useState(false);
+  const [isBridgesOpen, setIsBridgesOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleTrade = () => {
+    setIsTradeOpen(!isTradeOpen);
+  };
+
+  const toggleBridges = () => {
+    setIsBridgesOpen(!isBridgesOpen);
   };
 
   const handleConnectWallet = async () => {
@@ -312,29 +323,171 @@ function Header() {
         />
       </div>
 
+      <button className="menu-toggle" onClick={toggleMenu}>
+        <div className={`burger-icon ${isOpen ? "open" : ""}`}>
+          <span className="bar bar1"></span>
+          <span className="bar bar2"></span>
+          <span className="bar bar3"></span>
+        </div>
+      </button>
+
       <div
         className={`burger-menu ${isOpen ? "open" : ""}`}
         onClick={toggleMenu}
       >
-        <div className="bar1"></div>
-        <div className="bar2"></div>
-        <div className="bar3"></div>
+        <div className="line top"></div>
+        <div className="line middle"></div>
+        <div className="line bottom"></div>
       </div>
+
       <nav className={`mobile-menu ${isOpen ? "open" : ""}`}>
-        <ul>
-          <li>
-            <a href="#home">Home</a>
-          </li>
-          <li>
-            <a href="#services">Services</a>
-          </li>
-          <li>
-            <a href="#about">About</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
-        </ul>
+        <div id="mobile-menu-item-trade" className="mobile-menu-item">
+          <div
+            id="trade-accordion"
+            className={`accordion ${isTradeOpen ? "open" : ""}`}
+            onClick={toggleTrade}
+          >
+            <div id="trade-item" className="accordion-title">
+              <span>Trade</span>
+              <svg
+                id="arrow"
+                viewBox="0 0 17 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.125 6L8.125 10L12.125 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </div>
+
+            <div
+              className={`accordion-content-trade ${isTradeOpen ? "open" : ""}`}
+            >
+              <div className="accordion-content-item">
+                <img src={simpleModeIconDark} />
+                <a
+                  href="https://app.1inch.io/#/137/simple/swap/USDT/DAI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Simple mode
+                </a>
+              </div>
+              <div className="accordion-content-item">
+                <img src={advancedModeIcon} />
+                <a
+                  href="https://app.1inch.io/#/137/advanced/swap/USDT/DAI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Advanced mode
+                </a>
+              </div>
+              <div className="accordion-content-item">
+                <img src={limitOrderIcon} />
+                <a
+                  href="https://app.1inch.io/#/137/advanced/limit-order/USDT/DAI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Limit order
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mobile-menu-item">
+          <span className="mobile-menu-item-dao">DAO &#128712;</span>
+        </div>
+        <div className="mobile-menu-item">
+          <div
+            id="bridges-accordion"
+            className={`accordion ${isBridgesOpen ? "open" : ""}`}
+            onClick={toggleBridges}
+          >
+            <div id="bridges-item" className="accordion-title">
+              Bridges
+              <svg
+                id="arrow"
+                viewBox="0 0 17 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.125 6L8.125 10L12.125 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </div>
+            <div className={`accordion-content ${isBridgesOpen ? "open" : ""}`}>
+              <a className="dropdownBridges-item">
+                <img src={bnbIcon} />
+                <span>BNB Chain bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={polygonIcon} />
+                <span>Polygon bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={optimismIcon} />
+                <span>Optimism bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={arbitrumIcon} />
+                <span>Arbitrum bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={gnosisIcon} />
+                <span>Gnosis Chain bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={avalancheIcon} />
+                <span>Avalanche bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={fantomIcon} />
+                <span>Fantom bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={klaytnIcon} />
+                <span>Klaytn bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={auroraIcon} />
+                <span>Aurora bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={zksyncIcon} />
+                <span>zkSync Era bridge</span>
+              </a>
+              <a className="dropdownBridges-item">
+                <img src={baseIcon} />
+                <span>Base bridge</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="mobile-menu-item">
+          <span href="#portfolio">Portfolio</span>
+        </div>
+        <div className="mobile-menu-item">
+          <span href="#buy-crypto">Buy Crypto</span>
+        </div>
+        <div id="card-item" className="mobile-menu-item">
+          <span href="#card">Card</span>
+        </div>
       </nav>
 
       {dropdownVisible && (

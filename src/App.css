@@ -30,6 +30,8 @@
   display: flex;
   flex-direction: row;
   max-width: 1400px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #text {
@@ -1125,7 +1127,7 @@
 }
 
 .widget-input input::placeholder {
-  color: #242d3a;
+  color: #6c86ad;
   font-size: 16px;
 }
 
@@ -1214,50 +1216,97 @@ svg#arrow-swap {
   position: relative;
 }
 
-/* Стили для бургер-меню и мобильного меню */
-.burger-menu {
-  display: none; /* Скрыто по умолчанию */
+.menu-toggle {
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 0;
   position: absolute;
-  top: 1.25rem;
-  right: 1.5rem;
   z-index: 1000;
+  top: 1.5rem;
+  right: 0.25rem;
 }
 
-.burger-menu .bar1,
-.burger-menu .bar2,
-.burger-menu .bar3 {
+.burger-icon {
+  position: relative;
+  width: 30px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.burger-icon .bar {
+  width: 20px;
   height: 2px;
-  background-color: #6c86ad; /* Цвет полосок и крестика */
-  margin: 6px 0;
-  transition: 0.3s;
+  background: #6c86ad;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.burger-menu .bar1 {
-  width: 20px;
+.burger-icon.open .bar1 {
+  transform: rotate(45deg) translateY(6px);
 }
 
-.burger-menu .bar2 {
-  width: 20px;
-}
-
-.burger-menu .bar3 {
-  width: 10px;
-}
-
-.burger-menu.open .bar1 {
-  transform: rotate(-48deg) translate(-5px, 6px);
-  width: 15px;
-}
-
-.burger-menu.open .bar2 {
+.burger-icon.open .bar2 {
   opacity: 0;
 }
 
-.burger-menu.open .bar3 {
-  transform: rotate(50deg) translate(-6px, -6px);
-  width: 15px;
+.burger-icon.open .bar3 {
+  transform: rotate(-45deg) translateY(-6px);
 }
+
+.burger-icon .bar1 {
+  width: 20px;
+}
+
+.burger-icon .bar2 {
+  width: 20px;
+}
+
+.burger-icon .bar3 {
+  width: 20px;
+}
+
+.burger-icon.open .bar1 {
+  transform: rotate(45deg) translateY(13px) translateX(1px);
+}
+
+.burger-icon.open .bar2 {
+  opacity: 0;
+}
+
+.burger-icon.open .bar3 {
+  transform: rotate(-45deg) translateY(-12px);
+}
+
+.mobile-menu {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu.open {
+  display: block;
+  transform: translateX(0);
+  background-color: #06070a;
+  color: rgb(255, 255, 255);
+  border-top: 4rem;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Остальные стили для аккордеонов и меню остаются прежними */
 
 /* Стили для мобильного меню */
 .mobile-menu {
@@ -1277,30 +1326,259 @@ svg#arrow-swap {
 .mobile-menu.open {
   display: block;
   transform: translateX(0);
+
+  background-color: #06070a;
+  color: rgb(255, 255, 255);
+  border-top: 4rem;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
-.mobile-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  padding-top: 50px;
-}
-
-.mobile-menu li {
-  margin: 20px 0;
+#mobile-menu-item-trade {
+  margin-top: 4rem;
 }
 
 .mobile-menu a {
   text-decoration: none;
-  color: #333;
   font-size: 24px;
   display: block;
 }
 
+.mobile-menu-item {
+  min-height: 73px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: padding 0.3s ease;
+  border-bottom: 1px solid #2e384a;
+}
+
+#card-item {
+  border-bottom: none;
+}
+
+.accordion-content-trade {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.accordion-content-trade.open {
+  max-height: 200px; /* Убедитесь, что это значение достаточно для всех элементов внутри */
+  opacity: 1;
+  visibility: visible;
+}
+
+.accordion-content-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.accordion {
+  width: 100%;
+}
+
+.accordion-content-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
+}
+
+.accordion-content-item a {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: normal;
+  line-height: 16px;
+  color: #506583;
+}
+
+.accordion-content-item a:hover {
+  color: #506583;
+}
+
+.accordion-title {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.3s ease;
+}
+
+#trade-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.3s ease;
+}
+
+#trade-item svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #7aa4b6;
+  transition: transform 0.3s ease;
+}
+
+#bridges-item svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #7aa4b6;
+  transition: transform 0.3s ease;
+}
+
+/* Добавьте класс для поворота стрелки */
+.accordion.open #arrow {
+  transform: rotate(180deg);
+}
+
+.mobile-menu-item-dao {
+  color: #2e384a;
+  font-weight: 500;
+}
+
+.mobile-menu-item span {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Стили для аккордеона Bridges */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.accordion-content.open {
+  max-height: 300px; /* Убедитесь, что это значение достаточно для всех элементов внутри */
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdownBridges-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.dropdownBridges-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+.dropdownBridges-item span {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: normal;
+  line-height: 16px;
+  color: #506583;
+  line-height: 24px;
+  vertical-align: middle;
+}
+
+.dropdownBridges-item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dropdownBridges-item:hover {
+  color: #506583;
+  background-color: transparent;
+}
+
+/* Стиль для стрелки аккордеона Bridges */
+#arrow-bridges {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #7aa4b6;
+  transition: transform 0.3s ease;
+}
+
+/* Добавьте класс для поворота стрелки */
+.accordion.open #arrow-bridges {
+  transform: rotate(180deg);
+}
+
+/* Стили для аккордеонов */ /*
+.accordion {
+  cursor: pointer;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.accordion-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+}
+
+.accordion-content {
+  background-color: #f9f9f9;
+  margin-top: 0.5rem;
+  background-color: #06070a;
+}
+
+.accordion-content a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #6c86ad;
+}
+
+#trade-accordion {
+  margin-top: 4rem;
+  height: 73px;
+  padding-bottom: 24px;
+  padding-top: 24px;
+}
+
+#DAO-item-menu {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #37455a !important;
+  margin-top: 2rem;
+}
+
+#bridges-accordion {
+  margin-top: 4rem;
+  height: 73px;
+  padding-bottom: 24px;
+  padding-top: 24px;
+}*/
+
 @media (max-width: 1336px) {
   .header-nav-menu {
     display: none;
+  }
+
+  .header-container {
+    justify-content: flex-end;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .header-left-col {
+    margin-right: auto;
+  }
+
+  .footer-copyright {
+    margin-left: 2rem;
+  }
+
+  .footer-ui-mirrors {
+    margin-right: 2rem;
   }
 }
 
@@ -1364,7 +1642,7 @@ svg#arrow-swap {
   }
 
   .header-buttons svg {
-    margin-top: auto;
+    margin-top: 0.5rem;
   }
 
   .source-token-amount-input {
@@ -1454,7 +1732,25 @@ svg#arrow-swap {
   }
 
   .header-buttons {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0.25rem;
+    margin-right: 1.5rem;
+  }
+
+  .header-container {
+    justify-content: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .header-left-col {
+    margin-right: 0.25rem;
+  }
+
+  .footer-copyright {
+    margin-left: 0.5rem;
+  }
+
+  .footer-ui-mirrors {
+    margin-right: 0.5rem;
   }
 }
