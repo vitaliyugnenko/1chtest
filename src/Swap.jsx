@@ -336,6 +336,7 @@ function Swap() {
                   value={youPayTokenAmount}
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
+                  maxLength={6}
                   id="payPrice"
                   className="source-token-amount-input"
                   style={{
@@ -353,9 +354,7 @@ function Swap() {
               </div>
               <div className="token-info">
                 <span className="token-name">{tokenYouPayFullName}</span>
-                <div className="token-amount">
-                  {"~$" + (youPayTokenPrice * youPayTokenAmount).toFixed(6)}
-                </div>
+                <div className="token-amount">{"~$" + youPayTokenPrice}</div>
               </div>
             </div>
             <div className="swap-separator">
@@ -423,8 +422,7 @@ function Swap() {
               <div className="token-info">
                 <span className="token-name">{youReceiveToken}</span>
                 <div className="token-amount">
-                  {"~$" +
-                    (youReceiveTokenAmount * youReceiveTokenPrice).toFixed(6)}
+                  {"~$" + youReceiveTokenPrice}
                 </div>
               </div>
             </div>
