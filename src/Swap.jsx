@@ -102,6 +102,15 @@ function Swap() {
     setYouReceiveTokenPrice(currentPayPrice);
   };
 
+  const validateInput = (value) => {
+    // Проверяем, является ли значение пустой строкой
+    if (value === "") return true;
+
+    // Проверяем, является ли значение числом и не имеет ведущих нулей, кроме '0'
+    const regex = /^(0|[1-9]\d*)(\.\d+)?$/;
+    return regex.test(value);
+  };
+
   useEffect(() => {
     const fetchNewPrice = async () => {
       if (youPayToken && youReceiveToken) {
@@ -266,7 +275,22 @@ function Swap() {
                 <input
                   type="number"
                   value={youPayTokenAmount}
-                  onChange={(e) => setYouPayTokenAmount(Number(e.target.value))}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (validateInput(value)) {
+                      setYouPayTokenAmount(Number(value));
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Блокируем ввод символов, не соответствующих валидному числу
+                    if (
+                      !/[0-9.]|Backspace|Delete|ArrowLeft|ArrowRight/.test(
+                        e.key
+                      )
+                    ) {
+                      e.preventDefault();
+                    }
+                  }}
                   id="payPrice"
                   className="source-token-amount-input"
                   style={{
