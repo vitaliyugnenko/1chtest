@@ -297,7 +297,7 @@ function Header() {
         <ConnectButton
           chainStatus={{
             smallScreen: "icon",
-            largeScreen: true,
+            largeScreen: "full",
           }}
           showBalance={{
             smallScreen: true,

@@ -1343,4 +1343,14 @@ svg#arrow-swap {
   .page-content {
     overflow-x: hidden;
   }
+
+  .footer {
+    white-space: nowrap;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .swap-from-button-title {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
