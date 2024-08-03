@@ -102,13 +102,72 @@ function Swap() {
     setYouReceiveTokenPrice(currentPayPrice);
   };
 
-  const validateInput = (value) => {
-    // Проверяем, является ли значение пустой строкой
-    if (value === "") return true;
+  const handleInputChange = (e) => {
+    let value = e.target.value;
 
-    // Проверяем, является ли значение числом и не имеет ведущих нулей, кроме '0'
-    const regex = /^(0|[1-9]\d*)(\.\d+)?$/;
-    return regex.test(value);
+    // Разрешаем только цифры и точку
+    value = value.replace(/[^0-9.]/g, "");
+
+    // Если точка в начале, убираем её и добавляем ноль
+    if (value.startsWith(".")) {
+      value = "0" + value;
+    }
+
+    // Разделяем строку на целую и дробную части
+    let [integerPart, decimalPart] = value.split(".");
+
+    // Убираем ведущие нули в целой части
+    if (integerPart.length > 1 && integerPart.startsWith("0")) {
+      integerPart = integerPart.replace(/^0+/, "");
+      if (integerPart === "") {
+        integerPart = "0";
+      }
+    }
+
+    // Если дробная часть пустая, то заполняем её нулями
+    if (decimalPart === undefined) {
+      decimalPart = "";
+    }
+
+    // Если есть дробная часть, удаляем лишние нули в конце
+    if (decimalPart.length > 1) {
+      decimalPart = decimalPart.replace(/0+$/, "");
+    }
+
+    // Собираем конечное значение
+    value = integerPart + (decimalPart ? "." + decimalPart : "");
+
+    // Устанавливаем значение в состояние
+    setYouPayTokenAmount(value === "" ? "" : Number(value));
+  };
+
+  const handleKeyDown = (e) => {
+    const value = e.target.value;
+    const { key } = e;
+    const isValidKey = /[0-9.]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+      key
+    );
+
+    if (!isValidKey) {
+      e.preventDefault();
+      return;
+    }
+
+    // Проверяем ввод нуля после точки
+    if (
+      key === "0" &&
+      value.includes(".") &&
+      value.slice(value.indexOf(".") + 1).length === 0
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    // Проверяем ввод точки, если точка уже есть
+    if (key === "." && value.includes(".")) {
+      e.preventDefault();
+      return;
+    }
   };
 
   useEffect(() => {
@@ -275,22 +334,8 @@ function Swap() {
                 <input
                   type="number"
                   value={youPayTokenAmount}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (validateInput(value)) {
-                      setYouPayTokenAmount(Number(value));
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    // Блокируем ввод символов, не соответствующих валидному числу
-                    if (
-                      !/[0-9.]|Backspace|Delete|ArrowLeft|ArrowRight/.test(
-                        e.key
-                      )
-                    ) {
-                      e.preventDefault();
-                    }
-                  }}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                   id="payPrice"
                   className="source-token-amount-input"
                   style={{
