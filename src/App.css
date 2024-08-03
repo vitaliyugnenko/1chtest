@@ -1209,6 +1209,95 @@ svg#arrow-swap {
   height: 16px;
 }
 
+/* Общие стили для header */
+.header-container {
+  position: relative;
+}
+
+/* Стили для бургер-меню и мобильного меню */
+.burger-menu {
+  display: none; /* Скрыто по умолчанию */
+  cursor: pointer;
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.burger-menu .bar1,
+.burger-menu .bar2,
+.burger-menu .bar3 {
+  height: 2px;
+  background-color: #6c86ad; /* Цвет полосок и крестика */
+  margin: 6px 0;
+  transition: 0.3s;
+}
+
+.burger-menu .bar1 {
+  width: 20px;
+}
+
+.burger-menu .bar2 {
+  width: 20px;
+}
+
+.burger-menu .bar3 {
+  width: 10px;
+}
+
+.burger-menu.open .bar1 {
+  transform: rotate(-48deg) translate(-5px, 6px);
+  width: 15px;
+}
+
+.burger-menu.open .bar2 {
+  opacity: 0;
+}
+
+.burger-menu.open .bar3 {
+  transform: rotate(50deg) translate(-6px, -6px);
+  width: 15px;
+}
+
+/* Стили для мобильного меню */
+.mobile-menu {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu.open {
+  display: block;
+  transform: translateX(0);
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.mobile-menu li {
+  margin: 20px 0;
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: #333;
+  font-size: 24px;
+  display: block;
+}
+
 @media (max-width: 1336px) {
   .header-nav-menu {
     display: none;
@@ -1352,5 +1441,20 @@ svg#arrow-swap {
   .swap-from-button-title {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .burger-menu {
+    display: block;
+    width: 12px;
+    height: 12px;
+  }
+
+  .mobile-menu {
+    display: block; /* Всегда показываем для применения transform */
+  }
+
+  .header-buttons {
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
 }
