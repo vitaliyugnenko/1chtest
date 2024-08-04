@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import logo from "./assets/logo.webp";
 import metamask from "./assets/metamask.svg";
 import bnbIcon from "./assets/bnb.svg";
@@ -15,6 +16,7 @@ import baseIcon from "./assets/base.svg";
 import ethereumIcon from "./assets/ethereum.svg";
 import l2Icon from "./assets/l2.svg";
 import simpleModeIcon from "./assets/simple-mode.svg";
+import simpleModeIconDark from "./assets/simple-mode-dark.svg";
 import simpleModeIconDark from "./assets/simple-mode-dark.svg";
 import advancedModeIcon from "./assets/advanced-mode.svg";
 import limitOrderIcon from "./assets/limit-order.svg";
@@ -49,6 +51,7 @@ const checkWalletConnection = async ({ setWalletAddress, setError }) => {
       const walletAddress = accounts[0];
       setWalletAddress(formatAddress(walletAddress));
       console.log("Wallet Address:", walletAddress);
+      console.log("Wallet Address:", walletAddress);
     }
   } catch (err) {
     setError(err.message);
@@ -56,6 +59,7 @@ const checkWalletConnection = async ({ setWalletAddress, setError }) => {
   }
 };
 
+/*
 /*
 const connectWallet = async ({ setWalletAddress, setError }) => {
   try {
@@ -85,6 +89,7 @@ const connectWallet = async ({ setWalletAddress, setError }) => {
     console.log(err.message);
   }
 };*/
+};*/
 
 function Header({walletAddress, setWalletAddress}) {
   const [error, setError] = useState();
@@ -93,6 +98,111 @@ function Header({walletAddress, setWalletAddress}) {
   const [dropdownBridgeVisible, setDropdownBridgeVisible] = useState(false);
   const [dropdownNetworksVisible, setDropdownNetworksVisible] = useState(false);
   const [dropdownTradeVisible, setDropdownTradeVisible] = useState(false);
+  const [dropdownSettingsVisible, setDropdownSettingsVisible] = useState(false);
+
+  const [dropdownSettingsTheme, setDropdownSettingsTheme] = useState(false);
+  const [dropdownSettingsLanguage, setDropdownSettingsLanguage] =
+    useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isTradeOpen, setIsTradeOpen] = useState(false);
+  const [isBridgesOpen, setIsBridgesOpen] = useState(false);
+
+  const [timerId, setTimerId] = useState(null);
+  const [timer, setTimer] = useState(null);
+  const [timer3, setTimer3] = useState(null);
+  const dropdownRef3 = useRef(null);
+  const dropdownRef2 = useRef(null);
+  const dropdownRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    setDropdownVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Устанавливаем таймер на 300ms (или другое время по вашему выбору)
+    const id = setTimeout(() => {
+      setDropdownVisible(false);
+    }, 300);
+    setTimerId(id);
+  };
+
+  const handleDropdownMouseEnter = () => {
+    // Очистить таймер, чтобы предотвратить скрытие
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    setDropdownVisible(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    // Устанавливаем таймер на 300ms (или другое время по вашему выбору)
+    const id = setTimeout(() => {
+      setDropdownVisible(false);
+    }, 300);
+    setTimerId(id);
+  };
+
+  const handleMouseEnter2 = () => {
+    if (timer) clearTimeout(timer);
+    setDropdownTradeVisible(true);
+  };
+
+  const handleMouseLeave2 = () => {
+    const newTimer = setTimeout(() => {
+      setDropdownTradeVisible(false);
+    }, 300); // Задержка на 300 мс
+    setTimer(newTimer);
+  };
+
+  const handleDropdownMouseEnter2 = useCallback(() => {
+    if (timer) clearTimeout(timer);
+  }, [timer]);
+
+  const handleDropdownMouseLeave2 = useCallback(() => {
+    const newTimer = setTimeout(() => {
+      setDropdownTradeVisible(false);
+    }, 300);
+    setTimer(newTimer);
+  }, [timer]);
+
+  const handleMouseEnter3 = () => {
+    if (timer3) clearTimeout(timer3);
+    setDropdownBridgeVisible(true);
+  };
+
+  const handleMouseLeave3 = () => {
+    const newTimer = setTimeout(() => {
+      setDropdownBridgeVisible(false);
+    }, 300); // Задержка на 300 мс
+    setTimer3(newTimer);
+  };
+
+  const handleDropdownMouseEnter3 = useCallback(() => {
+    if (timer3) clearTimeout(timer3);
+  }, [timer3]);
+
+  const handleDropdownMouseLeave3 = useCallback(() => {
+    const newTimer = setTimeout(() => {
+      setDropdownBridgeVisible(false);
+    }, 300);
+    setTimer(newTimer);
+  }, [timer3]);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggleTrade = () => {
+    setIsTradeOpen(!isTradeOpen);
+  };
+
+  const toggleBridges = () => {
+    setIsBridgesOpen(!isBridgesOpen);
+  };
   const [dropdownSettingsVisible, setDropdownSettingsVisible] = useState(false);
 
   const [dropdownSettingsTheme, setDropdownSettingsTheme] = useState(false);
@@ -269,6 +379,8 @@ function Header({walletAddress, setWalletAddress}) {
             className="nav-menu-item"
             onMouseEnter={handleMouseEnter2}
             onMouseLeave={handleMouseLeave2}
+            onMouseEnter={handleMouseEnter2}
+            onMouseLeave={handleMouseLeave2}
           >
             <span>Trade</span>
             <svg
@@ -326,6 +438,8 @@ function Header({walletAddress, setWalletAddress}) {
 
           <div
             className="nav-menu-item"
+            onMouseEnter={handleMouseEnter3}
+            onMouseLeave={handleMouseLeave3}
             onMouseEnter={handleMouseEnter3}
             onMouseLeave={handleMouseLeave3}
           >
@@ -422,11 +536,95 @@ function Header({walletAddress, setWalletAddress}) {
             smallScreen: "icon",
             largeScreen: "full",
           }}
+          chainStatus={{
+            smallScreen: "icon",
+            largeScreen: "full",
+          }}
           showBalance={{
             smallScreen: true,
             largeScreen: true,
           }}
         />
+        <div
+          className="nav-menu-item"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <svg
+            id="help2"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M11.8208 14.043C11.3803 14.043 11.0102 13.6832 11.0795 13.2482C11.1179 13.0073 11.1759 12.7973 11.2535 12.6183C11.407 12.2643 11.7093 11.8768 12.1605 11.4556C12.6163 11.03 12.9047 10.7276 13.0256 10.5484C13.2116 10.2751 13.3047 9.97939 13.3047 9.66129C13.3047 9.24014 13.1953 8.9198 12.9767 8.70027C12.7628 8.47625 12.4465 8.36425 12.0279 8.36425C11.6279 8.36425 11.3047 8.47401 11.0581 8.69355C11.0227 8.72509 10.9898 8.75832 10.9595 8.79324C10.6546 9.1449 10.3181 9.57392 9.85265 9.57392C9.38337 9.57392 8.98483 9.18077 9.12981 8.73445C9.26312 8.32405 9.49892 7.97664 9.83721 7.6922C10.3907 7.23073 11.1209 7 12.0279 7C12.9628 7 13.6907 7.22849 14.2116 7.68548C14.7372 8.14247 15 8.78091 15 9.60081C15 10.3311 14.6465 11.0502 13.9395 11.7581L13.0814 12.5712C12.9126 12.756 12.7888 12.9875 12.71 13.2658C12.5912 13.6853 12.2568 14.043 11.8208 14.043ZM10.9047 16.1331C10.9047 15.8687 10.9907 15.6559 11.1628 15.4946C11.3349 15.3289 11.5674 15.246 11.8605 15.246C12.1581 15.246 12.393 15.3311 12.5651 15.5013C12.7372 15.6671 12.8233 15.8777 12.8233 16.1331C12.8233 16.3795 12.7395 16.5856 12.5721 16.7513C12.4047 16.9171 12.1674 17 11.8605 17C11.5535 17 11.3163 16.9171 11.1488 16.7513C10.986 16.5856 10.9047 16.3795 10.9047 16.1331Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          {dropdownVisible && (
+            <div
+              className="header-menu-dropdown"
+              onMouseEnter={handleDropdownMouseEnter}
+              onMouseLeave={handleDropdownMouseLeave}
+              ref={dropdownRef}
+            >
+              <div className="header-menu-dropdown-item">
+                <a
+                  className="header-menu-dropdown-item-link"
+                  href="https://docs.1inch.io/"
+                  target="_blank"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                  >
+                    <defs>
+                      <svg
+                        id="api"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M15.7052 6.70538C15.3157 6.31581 14.684 6.31581 14.2945 6.70538C13.9052 7.09466 13.9048 7.72569 14.2937 8.11538L18.1698 12L14.2937 15.8846C13.9048 16.2743 13.9052 16.9053 14.2945 17.2946C14.684 17.6842 15.3157 17.6842 15.7052 17.2946L20.2927 12.7071C20.6833 12.3166 20.6833 11.6834 20.2927 11.2929L15.7052 6.70538Z"
+                          fill="#6c86ad"
+                        ></path>
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M8.29477 6.70538C8.68434 6.31581 9.31597 6.31581 9.70554 6.70538C10.0948 7.09466 10.0952 7.72569 9.70631 8.11538L5.83016 12L9.70631 15.8846C10.0952 16.2743 10.0948 16.9053 9.70554 17.2946C9.31597 17.6842 8.68434 17.6842 8.29477 17.2946L3.70726 12.7071C3.31674 12.3166 3.31674 11.6834 3.70726 11.2929L8.29477 6.70538Z"
+                          fill="#6c86ad"
+                        ></path>
+                      </svg>
+                    </defs>
+                    <g>
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.7052 6.70538C15.3157 6.31581 14.684 6.31581 14.2945 6.70538C13.9052 7.09466 13.9048 7.72569 14.2937 8.11538L18.1698 12L14.2937 15.8846C13.9048 16.2743 13.9052 16.9053 14.2945 17.2946C14.684 17.6842 15.3157 17.6842 15.7052 17.2946L20.2927 12.7071C20.6833 12.3166 20.6833 11.6834 20.2927 11.2929L15.7052 6.70538Z"
+                        fill="#6c86ad"
+                      ></path>
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M8.29477 6.70538C8.68434 6.31581 9.31597 6.31581 9.70554 6.70538C10.0948 7.09466 10.0952 7.72569 9.70631 8.11538L5.83016 12L9.70631 15.8846C10.0952 16.2743 10.0948 16.9053 9.70554 17.2946C9.31597 17.6842 8.68434 17.6842 8.29477 17.2946L3.70726 12.7071C3.31674 12.3166 3.31674 11.6834 3.70726 11.2929L8.29477 6.70538Z"
+                        fill="#6c86ad"
+                      ></path>
+                    </g>
+                  </svg>
         <div
           className="nav-menu-item"
           onMouseEnter={handleMouseEnter}
