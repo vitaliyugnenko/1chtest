@@ -46,7 +46,30 @@ const sendTransaction = async ({ setError }) => {
   }
 };
 
+const formatAddress = (address) => {
+  if (!address) return "";
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+const checkWalletConnection = async ({ setWalletAddress, setError }) => {
+  try {
+    if (!window.ethereum)
+      throw new Error("No crypto wallet found. Please install it.");
+
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts.length > 0) {
+      const walletAddress = accounts[0];
+      setWalletAddress(formatAddress(walletAddress));
+      console.log("Wallet Address:", walletAddress);
+    }
+  } catch (err) {
+    setError(err.message);
+    console.log(err.message);
+  }
+};
+
 function Swap() {
+  const [walletAddress, setWalletAddress] = useState("");
   const [swapFromExpand, setSwapFromExpand] = useState(false);
   const [swapSelectToken, setSwapSelectToken] = useState(false);
   const [swapSelectSourceToken, setSwapSelectSourceToken] = useState(false);
@@ -169,6 +192,31 @@ function Swap() {
       return;
     }
   };
+
+  useEffect(() => {
+    if (window.ethereum) {
+      checkWalletConnection({ setWalletAddress, setError });
+
+      const handleAccountsChanged = (accounts) => {
+        if (accounts.length === 0) {
+          setWalletAddress("");
+        } else {
+          setWalletAddress(formatAddress(accounts[0]));
+        }
+      };
+
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
+      };
+    } else {
+      console.log("No crypto wallet found. Please install it.");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchNewPrice = async () => {
@@ -530,25 +578,47 @@ function Swap() {
               )}
             </div>
             <div className="swap-button-container">
-              <button className="swap-button" onClick={handleSendTransaction}>
-                <span className="swap-button-content">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M6 2C3.79086 2 2 3.79086 2 6V8V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V10C22 7.79086 20.2091 6 18 6C18 3.79086 16.2091 2 14 2H6ZM16 6H4C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6ZM4 18V8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18ZM14 13C13.4477 13 13 13.4477 13 14C13 14.5523 13.4477 15 14 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H14Z"
-                      fill="#5599FF"
-                    />
-                  </svg>
-                  Swap
-                </span>
-              </button>
+              {walletAddress ? (
+                <button className="swap-button" onClick={handleSendTransaction}>
+                  <span className="swap-button-content">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M6 2C3.79086 2 2 3.79086 2 6V8V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V10C22 7.79086 20.2091 6 18 6C18 3.79086 16.2091 2 14 2H6ZM16 6H4C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6ZM4 18V8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18ZM14 13C13.4477 13 13 13.4477 13 14C13 14.5523 13.4477 15 14 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H14Z"
+                        fill="#5599FF"
+                      />
+                    </svg>
+                    Swap
+                  </span>
+                </button>
+              ) : (
+                <button className="swap-button" disabled>
+                  <span className="swap-button-content">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M6 2C3.79086 2 2 3.79086 2 6V8V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V10C22 7.79086 20.2091 6 18 6C18 3.79086 16.2091 2 14 2H6ZM16 6H4C4 4.89543 4.89543 4 6 4H14C15.1046 4 16 4.89543 16 6ZM4 18V8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18ZM14 13C13.4477 13 13 13.4477 13 14C13 14.5523 13.4477 15 14 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H14Z"
+                        fill="#5599FF"
+                      />
+                    </svg>
+                    Connect wallet
+                  </span>
+                </button>
+              )}
             </div>
           </>
         )}

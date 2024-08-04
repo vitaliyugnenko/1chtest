@@ -47,7 +47,6 @@
 }
 
 .nav-menu-item:hover {
-  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 
@@ -125,7 +124,7 @@
 }
 
 .header-buttons {
-  margin-right: 16px;
+  margin-right: 3rem;
   width: 50%;
   display: flex;
   flex-direction: row;
@@ -139,12 +138,14 @@
 
 #settings4 {
   margin-left: 14px;
+  margin-top: -0.5rem;
   width: 24px;
   height: 24px;
 }
 
 #help2 {
   margin-left: 14px;
+  margin-top: -0.5rem;
   width: 24px;
   height: 24px;
 }
@@ -747,7 +748,7 @@
 }
 
 .header-menu-dropdown-item {
-  width: 228px;
+  width: 100%;
   height: 42px;
   display: flex;
   flex-direction: row;
@@ -757,6 +758,7 @@
 
 .header-menu-dropdown-item:hover {
   background-color: #0c1119;
+  color: #fff; /* Задаем белый цвет текста */
 }
 
 .header-menu-dropdown-item span {
@@ -764,22 +766,40 @@
   font-weight: 400;
 }
 
-.header-menu-dropdown-item span:hover {
-  color: rgb(255, 255, 255);
-}
-
 .header-menu-dropdown-item-link {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  vertical-align: middle;
+  width: 100%;
+  text-decoration: none; /* Убираем подчеркивание ссылок */
 }
 
 .header-menu-dropdown-item-link svg {
   margin-right: 1rem;
   margin-left: 0.5rem;
+  margin-top: 0 !important;
   width: 24px;
   height: 24px;
+}
+
+/* Наследование цвета для вложенных элементов при наведении */
+.header-menu-dropdown-item:hover .header-menu-dropdown-item-link,
+.header-menu-dropdown-item:hover .header-menu-dropdown-item-link svg,
+.header-menu-dropdown-item:hover .header-menu-dropdown-item-link span {
+  color: inherit;
+  fill: inherit; /* Для изменения цвета svg */
+}
+.header-menu-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.header-menu-dropdown.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 #help2 {
@@ -830,7 +850,6 @@
 }
 
 .dropdownBridges-item:hover {
-  color: rgb(255, 255, 255);
   background-color: #0c1119;
 }
 
@@ -887,7 +906,6 @@
 }
 
 .dropdown-networks-item:hover {
-  color: rgb(255, 255, 255);
   background-color: #0c1119;
 }
 
@@ -910,8 +928,12 @@
   width: 296px;
 }
 
-#dropdown-trade-item-selected {
-  color: #ffffff;
+#dropdown-trade-item-selected span {
+  color: #ffffff !important;
+}
+
+#dropdown-trade-item-selected h2 {
+  color: #ffffff !important;
 }
 
 .dropdown-trade-item img {
@@ -947,14 +969,24 @@
   margin-bottom: 0.25rem;
 }
 
-.dropdown-trade-item-content:hover {
+.dropdown-trade-item:hover {
   color: rgb(255, 255, 255);
   background-color: #0c1119;
 }
 
+.dropdown-trade-item:hover .dropdown-trade-item-content {
+  color: inherit;
+}
+
+.dropdown-trade-item:hover .dropdown-trade-item-content h2,
+.dropdown-trade-item:hover .dropdown-trade-item-content span {
+  color: inherit;
+}
+
 .dropdown-trade,
 .dropdownBridges,
-.dropdown-networks {
+.dropdown-networks,
+.header-menu-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -968,10 +1000,191 @@
 
 .dropdown-trade.visible,
 .dropdownBridges.visible,
-.dropdown-networks.visible {
+.dropdown-networks.visible,
+.header-menu-dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+.dropdown-trade {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.dropdown-trade.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdownBridges {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.dropdownBridges.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-menu-item {
+  position: relative;
+}
+
+.dropdownBridges-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  text-decoration: none;
+  color: #000;
+}
+
+.dropdownBridges-item img {
+  margin-right: 8px;
+}
+
+.dropdownBridges-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdownBridges {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdownBridges.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-menu-item {
+  position: relative;
+}
+
+.dropdownBridges-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  text-decoration: none;
+  color: #000;
+}
+
+.dropdownBridges-item img {
+  margin-right: 8px;
+}
+
+.dropdownBridges-item:hover {
+  background-color: #f0f0f0;
+}
+
+.header-settings-dropdown {
+  width: 420px;
+  height: 210px;
+  background-color: #131823;
+  color: #172a45 !important;
+  position: absolute;
+  top: 2rem;
+  right: -1.5rem;
+  max-height: 238px;
+  line-height: 16px;
+  font-weight: 400;
+  border-radius: 16px;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  cursor: default;
+}
+
+.header-settings-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-dropdown-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.settings-dropdown-item {
+  display: flex;
+  flex-direction: column;
+  width: 190px;
+  height: 123px;
+  background-color: #0c1119;
+  cursor: pointer;
+  border-radius: 14px;
+  justify-content: space-around;
+}
+
+.settings-dropdown-item:hover {
+  background-color: #06070a;
+}
+
+.settings-dropdown-item-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#theme_mode {
+  margin-top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.settings-dropdown-item-icons img {
+  width: 24px;
+  height: 24px;
+}
+
+.settings-dropdown-item-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-dropdown-title {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-dropdown-title span {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+}
+
+.settings-dropdown-title svg {
+  width: 24px;
+  height: 24px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.settings-dropdown-item-title {
+  margin-left: 1rem;
+}
+
+.settings-dropdown-item-title h3 {
+  color: rgb(255, 255, 255);
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.settings-dropdown-item-title p {
+  color: #596f8f;
+  font-size: 13px;
 }
 
 .swap-from-expand {
@@ -1224,7 +1437,8 @@ svg#arrow-swap {
   position: absolute;
   z-index: 1000;
   top: 1.5rem;
-  right: 0.25rem;
+  right: 1.5rem;
+  display: none;
 }
 
 .burger-icon {
@@ -1312,6 +1526,7 @@ svg#arrow-swap {
 .mobile-menu {
   display: none; /* Скрыто по умолчанию */
   position: fixed;
+  background-color: #06070a !important;
   top: 0;
   right: 0;
   width: 100%;
@@ -1512,6 +1727,10 @@ svg#arrow-swap {
   transform: rotate(180deg);
 }
 
+.header-buttons svg {
+  margin-top: 0.5rem;
+}
+
 /* Стили для аккордеонов */ /*
 .accordion {
   cursor: pointer;
@@ -1562,6 +1781,12 @@ svg#arrow-swap {
 @media (max-width: 1336px) {
   .header-nav-menu {
     display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+    top: 1.8rem;
+    right: 1.5rem;
   }
 
   .header-container {
@@ -1637,8 +1862,6 @@ svg#arrow-swap {
 
   .header-buttons {
     width: auto;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .header-buttons svg {
@@ -1752,5 +1975,21 @@ svg#arrow-swap {
 
   .footer-ui-mirrors {
     margin-right: 0.5rem;
+  }
+
+  .menu-toggle {
+    right: 0.5rem;
+  }
+
+  .header-container {
+    justify-content: space-between;
+  }
+
+  #help2 {
+    display: none;
+  }
+
+  #settings4 {
+    display: none;
   }
 }
